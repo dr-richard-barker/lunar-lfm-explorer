@@ -27,8 +27,10 @@ def run_tests() -> bool:
     import tests.test_benchmarks as t_bench
     import tests.test_hub_client as t_hub
     import tests.test_abai_compliance as t_abai
+    import tests.test_inference as t_infer
+    import tests.test_shackleton_analysis as t_shack
 
-    modules = [t_mod, t_spec, t_bench, t_hub, t_abai]
+    modules = [t_mod, t_spec, t_bench, t_hub, t_abai, t_infer, t_shack]
     total = 0
     passed = 0
     failed = 0

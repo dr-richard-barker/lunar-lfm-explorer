@@ -39,6 +39,12 @@ from lunar_lfm.benchmarks import (
     list_benchmarks,
 )
 from lunar_lfm.hub import LunarHubClient
+from lunar_lfm.inference import (
+    load_pretrained_lfm,
+    LunarViTBackbone,
+    LunarDownstreamPredictor,
+    FlexiPatchEmbed,
+)
 
 __all__ = [
     "__version__",
@@ -63,4 +69,8 @@ __all__ = [
     "get_benchmark",
     "list_benchmarks",
     "LunarHubClient",
+    "load_pretrained_lfm",
+    "LunarViTBackbone",
+    "LunarDownstreamPredictor",
+    "FlexiPatchEmbed",
 ]

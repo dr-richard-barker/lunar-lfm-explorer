@@ -31,6 +31,7 @@
       <button class="nav-tab" data-tab="tab-modalities">11 Modalities</button>
       <button class="nav-tab" data-tab="tab-geometry">Solar Geometry</button>
       <button class="nav-tab" data-tab="tab-architecture">ViT-B &amp; FlexiViT</button>
+      <button class="nav-tab" data-tab="tab-shackleton">Artemis IV &amp; Shackleton</button>
       <button class="nav-tab" data-tab="tab-benchmarks">Benchmarks &amp; Disclosures</button>
       <button class="nav-tab" data-tab="tab-hub">Hugging Face Hub</button>
     </nav>
@@ -199,6 +200,94 @@
           <img src="assets/model_scheme.svg" alt="NASA-IBM Lunar Foundation Model Architecture Diagram" style="max-width: 100%; height: auto; border-radius: 4px;" />
         </div>
         <p class="caption text-center mt-2">Figure 1: Multimodal tokenization and fusion pipeline spanning 13 lunar modalities (LROC NAC, WAC, Kaguya TC, SLDEM2015, LOLA slope, Diviner rock abundance, solar geometry, location coordinates) into ViT-B transformer backbone with late fusion and task decoders.</p>
+      </div>
+    </section>
+
+    <!-- TAB: ARTEMIS IV & SHACKLETON CRATER -->
+    <section id="tab-shackleton" class="tab-pane">
+      <div class="grid-2col">
+        <div class="card">
+          <h2>Artemis Candidate Landing Zones</h2>
+          <p class="text-muted">Explore South Polar candidate landing sites around Shackleton Crater (89.9°S, 0.0°E) evaluated for slope trafficability, illumination stability, and volatile cold-trap proximity.</p>
+          
+          <div class="control-group">
+            <label>Select Candidate Region:</label>
+            <div class="btn-group" id="shackleton-zone-buttons">
+              <button class="btn btn-zone active" data-zone="CR-1">Connecting Ridge (Primary)</button>
+              <button class="btn btn-zone" data-zone="PNS-1">Peak Near Shackleton</button>
+              <button class="btn btn-zone" data-zone="CRE-1">Ridge Extension</button>
+              <button class="btn btn-zone" data-zone="SR-1">Rim Crest</button>
+            </div>
+          </div>
+
+          <div class="site-detail-box mt-3" id="shackleton-details">
+            <!-- Populated dynamically by app.js -->
+          </div>
+
+          <div class="mt-4">
+            <a id="shackleton-quickmap-btn" href="https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10" target="_blank" rel="noopener" class="btn btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 18px; font-weight: bold;">
+              🗺️ Open in LROC QuickMap (South Pole 3D GIS)
+            </a>
+            <span class="text-muted text-sm" style="display: block; margin-top: 6px;">Directly cross-examine raw LROC NAC mosaics, LOLA slope, and Diviner thermal maps on ACT-REACT QuickMap.</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Interactive Landing Hazard &amp; Ingress Simulator</h2>
+          <p class="text-muted">Simulate autonomous touchdown clearance and rover ingress feasibility based on NASA-IBM LFM slope and boulder predictions.</p>
+
+          <div class="control-group">
+            <label for="slider-slope-thresh">Maximum Lander Slope Limit: <span id="val-slope-thresh">10.0°</span></label>
+            <input type="range" id="slider-slope-thresh" min="5" max="20" step="0.5" value="10.0" class="touch-slider">
+          </div>
+
+          <div class="control-group">
+            <label for="slider-rock-thresh">Diviner Rock Abundance Limit: <span id="val-rock-thresh">0.05</span></label>
+            <input type="range" id="slider-rock-thresh" min="0.01" max="0.12" step="0.01" value="0.05" class="touch-slider">
+          </div>
+
+          <div class="metric-row">
+            <div class="metric-box">
+              <span class="metric-val" id="metric-safe-pct">78.4%</span>
+              <span class="metric-lbl">Safe Touchdown Area</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-val" id="metric-power-score">High (87%)</span>
+              <span class="metric-lbl">Solar Power Status</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-val" id="metric-psr-access">1.2 km</span>
+              <span class="metric-lbl">Cold Trap Distance</span>
+            </div>
+          </div>
+
+          <div class="hazard-canvas-container mt-3" style="background: rgba(10, 13, 20, 0.6); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color, #30363d);">
+            <svg id="shackleton-map-svg" viewBox="0 0 320 220" width="100%" height="200">
+              <defs>
+                <radialGradient id="crater-abyss" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#020305" />
+                  <stop offset="75%" stop-color="#0c0e14" />
+                  <stop offset="100%" stop-color="#242831" />
+                </radialGradient>
+              </defs>
+              <!-- Shackleton Rim Circle -->
+              <circle cx="160" cy="110" r="85" fill="url(#crater-abyss)" stroke="#606775" stroke-width="2" />
+              <!-- Crater Abyss Label -->
+              <text x="160" y="105" fill="#38bdf8" font-size="10" text-anchor="middle" font-weight="bold">SHACKLETON FLOOR</text>
+              <text x="160" y="120" fill="#94a3b8" font-size="9" text-anchor="middle">40 K Cold Trap (PSR)</text>
+              <!-- Connecting Ridge Highlight -->
+              <path id="svg-ridge-path" d="M 80 40 Q 120 70 145 95" stroke="#fbbf24" stroke-width="6" fill="none" opacity="0.8" />
+              <!-- Selected Landing Site Indicator -->
+              <circle id="svg-landing-site" cx="120" cy="70" r="10" fill="#22c55e" stroke="#ffffff" stroke-width="2" />
+              <text id="svg-site-label" x="120" y="55" fill="#22c55e" font-size="9" text-anchor="middle" font-weight="bold">CR-1 (Landing Ellipse)</text>
+              <!-- Rover Traversal Path -->
+              <line id="svg-rover-line" x1="120" y1="70" x2="148" y2="98" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4" />
+              <!-- North / Azimuth Indicator -->
+              <text x="290" y="25" fill="#f6c343" font-size="9" text-anchor="end">☀️ Sun Azim 120°</text>
+            </svg>
+          </div>
+          <p class="caption text-center mt-2">South Pole orthographic projection: Green landing ellipse on Connecting Ridge with dashed rover ingress corridor to the 40 K permanent cold trap</p>
+        </div>
       </div>
     </section>
 

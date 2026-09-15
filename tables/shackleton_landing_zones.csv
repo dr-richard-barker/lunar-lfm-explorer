@@ -1,0 +1,5 @@
+Zone ID,Name,Latitude (°S),Longitude (°E),Elevation (m),Safe Slope (<10°) %,Marginal Slope (10-15°) %,Hazard Slope (>15°) %,Annual Mean Illum %,DTE Comm %,Dist to PSR (km),Rock Abundance,Safety Score (1-10),LROC QuickMap URL
+CR-1,Connecting Ridge (Primary Artemis Target),89.54,116.5,1150.0,78.4,16.2,5.4,86.8,96.2,1.2,0.038,9.1,"https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10"
+PNS-1,Peak Near Shackleton,89.74,121.23,1320.0,65.1,24.3,10.6,84.5,92.4,2.8,0.052,8.3,"https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10"
+CRE-1,Connecting Ridge Extension,89.3,128.5,940.0,82.3,13.9,3.8,78.6,89.8,6.4,0.029,8.7,"https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10"
+SR-1,Shackleton Rim Crest,89.88,0.0,1280.0,48.0,31.0,21.0,82.1,91.0,0.3,0.068,7.2,"https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10"

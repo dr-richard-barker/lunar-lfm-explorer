@@ -179,6 +179,76 @@ def cmd_verify(args: argparse.Namespace) -> None:
     print("\nAll internal checks passed successfully.")
 
 
+def cmd_infer(args: argparse.Namespace) -> None:
+    """Run model inference or display architecture inference pipeline."""
+    from lunar_lfm.inference import load_pretrained_lfm, TORCH_AVAILABLE
+    patch_size = args.patch_size or 16
+    print(f"\n--- NASA-IBM LFM Model Inference (FlexiViT patch size {patch_size}x{patch_size}) ---")
+    res = load_pretrained_lfm(patch_size=patch_size)
+    if not TORCH_AVAILABLE:
+        print(f"Status: {res['message']}")
+        print(f"Backbone: {res['architecture'].backbone_type} (768 embed dim, 12 layers, 12 heads)")
+        print(f"Pretrain Patches: {res['architecture'].pretrain_patch_size}")
+        print(f"Evaluated Patch Size: {patch_size}x{patch_size}")
+        num_patches = (256 // patch_size) ** 2
+        print(f"Patches per modality: {num_patches}")
+        print(f"Dense Sequence (9 modalities): {num_patches * 9} tokens")
+        print(f"Total Sequence (+8 optical +28 context): {num_patches * 9 + 36} tokens")
+    else:
+        print("PyTorch model loaded successfully.")
+        print(f"Backbone: LunarViTBackbone ({res.backbone.depth} layers, {res.backbone.embed_dim} dim)")
+        print("Ready for tensor inference on GeoTIFF / LROC observation bundles.")
+
+
+def cmd_shackleton(args: argparse.Namespace) -> None:
+    """Print Artemis candidate landing sites around Shackleton Crater."""
+    print("\n" + "=" * 76)
+    print("  Shackleton Crater Artemis Candidate Landing Regions & LFM Evaluation")
+    print("=" * 76)
+    print("Crater Specs: 89.9°S, 0.0°E | Diameter: 21 km | Depth: 4.2 km")
+    print("Thermal Regime: ~40 K floor (Water-Ice Cold Trap) | ~220 K illuminated rim")
+    print("-" * 76)
+
+    sites = [
+        {
+            "name": "Connecting Ridge (Primary Artemis Site)",
+            "coords": "89.44°S to 89.85°S, 98.78°E to 137.31°E",
+            "slope_safe": "78% < 10°",
+            "illum": "86 - 92% annual",
+            "dte_comm": "96% Direct-to-Earth visibility",
+            "cold_trap_dist": "1.2 km to Shackleton PSR rim",
+            "quickmap": "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
+        },
+        {
+            "name": "Peak Near Shackleton",
+            "coords": "89.74°S, 121.23°E",
+            "slope_safe": "65% < 10° (steeper shoulder)",
+            "illum": "84 - 88% annual",
+            "dte_comm": "92% Direct-to-Earth visibility",
+            "cold_trap_dist": "2.8 km to Shackleton PSR rim",
+            "quickmap": "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
+        },
+        {
+            "name": "Connecting Ridge Extension",
+            "coords": "89.30°S, 128.50°E",
+            "slope_safe": "82% < 10° (smoother plateau)",
+            "illum": "76 - 82% annual",
+            "dte_comm": "90% Direct-to-Earth visibility",
+            "cold_trap_dist": "6.4 km to Shackleton PSR rim",
+            "quickmap": "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
+        },
+    ]
+
+    for s in sites:
+        print(f"\nSite: {s['name']}")
+        print(f"  Coordinates:          {s['coords']}")
+        print(f"  Slope Trafficability: {s['slope_safe']}")
+        print(f"  Solar Illumination:   {s['illum']}")
+        print(f"  DTE Communications:   {s['dte_comm']}")
+        print(f"  Cold Trap Proximity:  {s['cold_trap_dist']}")
+        print(f"  LROC QuickMap Link:   {s['quickmap']}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="lunar-lfm",
@@ -196,6 +266,11 @@ def main() -> None:
 
     subparsers.add_parser("benchmarks", help="Downstream benchmark evaluations and disclosures")
     subparsers.add_parser("hub-status", help="Hugging Face live repository probe")
+
+    infer_parser = subparsers.add_parser("infer", help="Run model inference or patch pipeline")
+    infer_parser.add_argument("--patch-size", type=int, choices=[8, 16, 32], default=16, help="Patch size for FlexiViT")
+
+    subparsers.add_parser("shackleton", help="Artemis candidate landing regions around Shackleton Crater")
     subparsers.add_parser("verify", help="Run local validation tests")
 
     args = parser.parse_args()
@@ -210,6 +285,10 @@ def main() -> None:
         cmd_benchmarks(args)
     elif args.command == "hub-status":
         cmd_hub_status(args)
+    elif args.command == "infer":
+        cmd_infer(args)
+    elif args.command == "shackleton":
+        cmd_shackleton(args)
     elif args.command == "verify":
         cmd_verify(args)
     else:
