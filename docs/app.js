@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFlexiViTExplorer();
   initShackletonExplorer();
   initBlenderViewer();
+  init3DSolarLab();
   initBenchmarks();
   initHubProbe();
 });
@@ -702,4 +703,102 @@ function initBlenderViewer() {
     });
   });
 }
+
+/* 3D Multi-Angle Solar Lab Controller */
+function init3DSolarLab() {
+  const angleButtons = document.querySelectorAll("#lab-3d-angle-buttons .btn-lab-angle");
+  const modelViewer = document.getElementById("lab-3d-model-viewer");
+  const badgeStatus = document.getElementById("lab-model-status-badge");
+  const regimeTitle = document.getElementById("lab-regime-title");
+  const regimeDesc = document.getElementById("lab-regime-desc");
+
+  const telInc = document.getElementById("lab-tel-inc");
+  const telAzim = document.getElementById("lab-tel-azim");
+  const telElev = document.getElementById("lab-tel-elev");
+  const telLit = document.getElementById("lab-tel-lit");
+  const telShadow = document.getElementById("lab-tel-shadow");
+  const telGain = document.getElementById("lab-tel-gain");
+
+  const opticalVector = document.getElementById("lab-optical-vector");
+  const tileImg = document.getElementById("lab-tile-preview-img");
+  const divBadge = document.getElementById("lab-divergence-badge");
+
+  const camButtons = document.querySelectorAll(".btn-cam-preset");
+
+  if (!angleButtons.length || !modelViewer) return;
+
+  // Illumination angle button handlers
+  angleButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      angleButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const modelFile = btn.getAttribute("data-model");
+      const tileFile = btn.getAttribute("data-tile");
+      const inc = btn.getAttribute("data-inc");
+      const azim = btn.getAttribute("data-azim");
+      const elev = btn.getAttribute("data-elev");
+      const regime = btn.getAttribute("data-regime");
+      const lit = btn.getAttribute("data-lit");
+      const shadow = btn.getAttribute("data-shadow");
+      const gain = btn.getAttribute("data-gain");
+      const div = btn.getAttribute("data-div");
+      const base = btn.getAttribute("data-base");
+      const vector = btn.getAttribute("data-vector");
+      const desc = btn.getAttribute("data-desc");
+
+      // Switch 3D GLB model
+      if (modelFile) {
+        modelViewer.src = `assets/3d/${modelFile}`;
+        if (badgeStatus) {
+          badgeStatus.textContent = `🌕 3D Model: ${regime} · 766 KB glTF · Drag to Orbit / Scroll to Zoom`;
+        }
+      }
+
+      // Update telemetry panel
+      if (regimeTitle) regimeTitle.textContent = regime;
+      if (regimeDesc) regimeDesc.textContent = desc;
+
+      if (telInc) telInc.textContent = inc === "None" ? "—" : `${parseFloat(inc).toFixed(1)}°`;
+      if (telAzim) telAzim.textContent = azim === "None" ? "—" : `${parseFloat(azim).toFixed(1)}°`;
+      if (telElev) telElev.textContent = elev === "None" ? "—" : `${parseFloat(elev).toFixed(1)}°`;
+      if (telLit) telLit.textContent = lit;
+      if (telShadow) telShadow.textContent = shadow;
+      if (telGain) telGain.textContent = gain;
+
+      // Update optical vector and preview tile
+      if (opticalVector) opticalVector.textContent = vector;
+      if (tileImg && tileFile) {
+        tileImg.src = `assets/blender_renders/${tileFile}`;
+        tileImg.alt = `Simulated LROC observation: ${regime}`;
+      }
+      if (divBadge) {
+        if (div === "0.0%") {
+          divBadge.textContent = "Geometric Reference: 0.0% Error Baseline";
+        } else {
+          divBadge.textContent = `LFM Divergence: ${div} (Baseline: ${base})`;
+        }
+      }
+    });
+  });
+
+  // Camera preset buttons
+  camButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      camButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const orbit = btn.getAttribute("data-orbit");
+      const target = btn.getAttribute("data-target");
+
+      if (modelViewer && orbit) {
+        modelViewer.setAttribute("camera-orbit", orbit);
+      }
+      if (modelViewer && target) {
+        modelViewer.setAttribute("camera-target", target);
+      }
+    });
+  });
+}
+
 

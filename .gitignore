@@ -24,6 +24,7 @@ data/weights/
 data/raw/
 checkpoints/
 .cache/
+results/3d_models/
 
 # LaTeX auxiliary files
 *.aux

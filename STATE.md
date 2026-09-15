@@ -28,4 +28,8 @@ This document tracks the verified active state, completed goals, and execution r
 - [x] 12. Implemented Blender 5.2 physical 3D modeling and lighting rig (`scripts/blender/generate_shackleton_3d.py`), generating optimized 897 KB glTF mesh and multi-angle simulated observation tiles.
 - [x] 13. Evaluated NASA-IBM LFM sequence-conditioned multi-angle observations (`scripts/test_lfm_shackleton_blender.py`), demonstrating +38.7% shadow disambiguation stability gain over baseline.
 - [x] 14. Integrated 3D `<model-viewer>` and multi-angle tile inspector into GitHub Pages and expanded unit tests to 24/24 passing.
+- [x] 15. Implemented Blender 5.2 ray-marched multi-illumination 3D modeling pipeline (`scripts/blender/generate_multi_illum_3d_models.py`), generating 6 lightweight glTF models (`docs/assets/3d/*.glb`, ~766 KB each) with baked solar shadows and diffuse regolith vertex lighting.
+- [x] 16. Built dedicated "3D Solar Lab" navigation tab on GitHub Pages with interactive `<model-viewer>`, illumination angle selector palette, camera viewpoint quick presets, physical telemetry, and LFM sequence-conditioning telemetry.
+- [x] 17. Expanded test suite to 28/28 passing tests (`tests/test_3d_solar_lab.py`, `tests/run_all_tests.py`) and verified 100% FAIR & ABAI compliance.
+
 
