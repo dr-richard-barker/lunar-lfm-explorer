@@ -467,12 +467,76 @@ function initShackletonExplorer() {
   const svgLabel = document.getElementById("svg-site-label");
   const svgRoverLine = document.getElementById("svg-rover-line");
 
+  const tableBody = document.getElementById("shackleton-table-body");
+  const tableSearch = document.getElementById("shackleton-table-search");
+  const sortHeaders = document.querySelectorAll("#shackleton-pipeline-table th.sortable");
+
   if (!zoneButtons.length || !detailsBox) return;
 
   const data = STATIC_FALLBACK_DATA.shackleton;
   let activeZone = data.zones[0];
+  let currentSort = { col: "safety_score", asc: false };
+  let currentFilter = "";
 
-  function renderZone(zone) {
+  function renderTable() {
+    if (!tableBody) return;
+    let zones = [...data.zones];
+
+    if (currentFilter.trim()) {
+      const q = currentFilter.toLowerCase();
+      zones = zones.filter(
+        (z) =>
+          z.id.toLowerCase().includes(q) ||
+          z.name.toLowerCase().includes(q) ||
+          z.coords.toLowerCase().includes(q)
+      );
+    }
+
+    zones.sort((a, b) => {
+      let va = a[currentSort.col];
+      let vb = b[currentSort.col];
+      if (typeof va === "string") {
+        return currentSort.asc ? va.localeCompare(vb) : vb.localeCompare(va);
+      }
+      return currentSort.asc ? va - vb : vb - va;
+    });
+
+    tableBody.innerHTML = "";
+    zones.forEach((z) => {
+      const tr = document.createElement("tr");
+      if (activeZone && activeZone.id === z.id) {
+        tr.classList.add("active-row");
+      }
+      tr.innerHTML = `
+        <td><strong>${z.id}</strong></td>
+        <td><strong>${z.name}</strong></td>
+        <td>+${z.elev} m</td>
+        <td><span style="color: #22c55e; font-weight: bold;">${z.slope_safe}%</span></td>
+        <td>${z.illum_mean}%</td>
+        <td>${z.dte_vis}%</td>
+        <td>${z.psr_dist_km} km</td>
+        <td>${z.rock_frac}</td>
+        <td><strong style="color: #fbbf24;">${z.safety_score}</strong></td>
+        <td>
+          <a href="${z.quickmap}" target="_blank" rel="noopener" class="btn btn-sm btn-quickmap" onclick="event.stopPropagation()">
+            QuickMap ↗
+          </a>
+        </td>
+      `;
+
+      tr.addEventListener("click", () => {
+        zoneButtons.forEach((b) => {
+          if (b.getAttribute("data-zone") === z.id) b.classList.add("active");
+          else b.classList.remove("active");
+        });
+        renderZone(z, false);
+      });
+
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function renderZone(zone, refreshTable = true) {
     activeZone = zone;
     detailsBox.innerHTML = `
       <h3 style="color: var(--color-accent, #58a6ff);">${zone.name}</h3>
@@ -508,6 +572,7 @@ function initShackletonExplorer() {
     }
 
     updateMetrics();
+    if (refreshTable) renderTable();
   }
 
   function updateMetrics() {
@@ -543,6 +608,26 @@ function initShackletonExplorer() {
       const zone = data.zones.find((z) => z.id === zoneId);
       if (zone) renderZone(zone);
     });
+  });
+
+  sortHeaders.forEach((th) => {
+    th.addEventListener("click", () => {
+      const col = th.getAttribute("data-sort");
+      if (currentSort.col === col) {
+        currentSort.asc = !currentSort.asc;
+      } else {
+        currentSort.col = col;
+        currentSort.asc = true;
+      }
+      sortHeaders.forEach((h) => (h.textContent = h.textContent.replace(/[▲▼]/g, "⬍")));
+      th.textContent = th.textContent.replace("⬍", currentSort.asc ? "▲" : "▼");
+      renderTable();
+    });
+  });
+
+  tableSearch?.addEventListener("input", (e) => {
+    currentFilter = e.target.value;
+    renderTable();
   });
 
   sliderSlope?.addEventListener("input", updateMetrics);

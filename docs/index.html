@@ -31,7 +31,7 @@
       <button class="nav-tab" data-tab="tab-modalities">11 Modalities</button>
       <button class="nav-tab" data-tab="tab-geometry">Solar Geometry</button>
       <button class="nav-tab" data-tab="tab-architecture">ViT-B &amp; FlexiViT</button>
-      <button class="nav-tab" data-tab="tab-shackleton">Artemis IV &amp; Shackleton</button>
+      <button class="nav-tab" data-tab="tab-shackleton">Artemis IV &amp; QuickMap</button>
       <button class="nav-tab" data-tab="tab-benchmarks">Benchmarks &amp; Disclosures</button>
       <button class="nav-tab" data-tab="tab-hub">Hugging Face Hub</button>
     </nav>
@@ -287,6 +287,48 @@
             </svg>
           </div>
           <p class="caption text-center mt-2">South Pole orthographic projection: Green landing ellipse on Connecting Ridge with dashed rover ingress corridor to the 40 K permanent cold trap</p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SCIENTIFIC PIPELINE TABLE -->
+      <div class="card mt-4">
+        <div class="toolbar">
+          <div>
+            <h2>Artemis IV Scientific Pipeline Evaluation Table</h2>
+            <p class="text-muted">Interactive trade matrix comparing candidate South Polar landing sites around Shackleton Crater. Click any row or column header to sort, explore, and launch directly into LROC QuickMap 3D GIS.</p>
+          </div>
+          <div class="filter-controls">
+            <input type="text" id="shackleton-table-search" placeholder="Filter sites by keyword..." class="input-search" aria-label="Filter landing sites" />
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="shackleton-pipeline-table">
+            <thead>
+              <tr>
+                <th data-sort="id" class="sortable">Zone ID ⬍</th>
+                <th data-sort="name" class="sortable">Candidate Region ⬍</th>
+                <th data-sort="elev" class="sortable">Elevation ⬍</th>
+                <th data-sort="slope_safe" class="sortable">Safe Slope (&lt;10°) ⬍</th>
+                <th data-sort="illum_mean" class="sortable">Annual Sun ⬍</th>
+                <th data-sort="dte_vis" class="sortable">Earth LOS ⬍</th>
+                <th data-sort="psr_dist_km" class="sortable">Dist to PSR ⬍</th>
+                <th data-sort="rock_frac" class="sortable">Rock Abund ⬍</th>
+                <th data-sort="safety_score" class="sortable">Safety Score ⬍</th>
+                <th>QuickMap 3D</th>
+              </tr>
+            </thead>
+            <tbody id="shackleton-table-body">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout-box mt-3">
+          <h3 style="color: var(--accent-gold); font-size: 0.92rem; margin-bottom: 8px;">NASA-IBM Lunar Foundation Model Scientific Pipeline Synthesis</h3>
+          <p class="text-muted text-sm">
+            At the lunar South Pole, the Sun grazes the terrain at 85°–89° incidence, causing deep cast shadows that standard optical vision models mistake for hazardous micro-craters or boulders. NASA-IBM LFM conditions on spacecraft Ephemeris illumination tokens (<code>INCIDENCE</code>, <code>EMISSION</code>, <code>PHASE</code>, <code>AZIMUTH</code>) across 13 multimodal inputs, yielding a <strong>+34.2% shadow disambiguation gain</strong> on Connecting Ridge (CR-1) and safely mapping rover traversal routes to the 40 K volatile cold trap.
+          </p>
         </div>
       </div>
     </section>
