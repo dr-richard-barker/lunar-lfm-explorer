@@ -1,0 +1,138 @@
+:root {
+  --cose-primary: #004d73;
+  --cose-dark-blue: #003049;
+  --cose-accent: #d62828;
+  --cose-bg: #f8f9fa;
+  --cose-card-bg: #ffffff;
+  --cose-text: #212529;
+  --cose-muted: #6c757d;
+  --cose-border: #e9ecef;
+}
+
+[data-theme="dark"] {
+  --cose-bg: #0b131f;
+  --cose-card-bg: #152238;
+  --cose-text: #e2e8f0;
+  --cose-muted: #94a3b8;
+  --cose-border: #1e293b;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--cose-bg);
+  color: var(--cose-text);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.cose-header {
+  background-color: var(--cose-dark-blue);
+  color: #ffffff;
+  padding: 2.5rem 1.5rem;
+  border-bottom: 4px solid var(--cose-accent);
+}
+
+.cose-header-content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cose-header h1 {
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.cose-header p {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  margin: 0 0 1.5rem 0;
+}
+
+.cose-badge {
+  display: inline-block;
+  background: var(--cose-accent);
+  color: #fff;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.cose-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.cose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cose-card {
+  background: var(--cose-card-bg);
+  border: 1px solid var(--cose-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.cose-card h3 {
+  margin-top: 0;
+  color: var(--cose-primary);
+}
+
+.cose-table-wrapper {
+  overflow-x: auto;
+  background: var(--cose-card-bg);
+  border: 1px solid var(--cose-border);
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+table.cose-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+table.cose-table th, table.cose-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--cose-border);
+  text-align: left;
+}
+
+table.cose-table th {
+  background: var(--cose-primary);
+  color: #ffffff;
+}
+
+.cose-btn {
+  display: inline-block;
+  background: var(--cose-primary);
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  transition: background 0.2s;
+}
+
+.cose-btn:hover {
+  background: var(--cose-dark-blue);
+}
+
+.cose-footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid var(--cose-border);
+  color: var(--cose-muted);
+  font-size: 0.85rem;
+}

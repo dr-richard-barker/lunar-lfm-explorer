@@ -1,0 +1,44 @@
+{
+  "title": "Comparative Planetary Magnetobiology of the Moon and Mars: Integrated Geophysical Mapping, Hypomagnetic Stress Synthesis, and Operational Life Support Frameworks for Deep-Space Exploration",
+  "description": "Integrated dataset, analysis pipeline, and manuscript evaluating the magnetic environments across 36 prospective and historical landing sites on the Moon and Mars, synthesized with a systematic review of hypomagnetic field (HMF) biological sensitivity.",
+  "creators": [
+    {
+      "name": "Barker, Richard",
+      "affiliation": "Purdue University",
+      "orcid": "0000-0003-4554-7164"
+    },
+    {
+      "name": "Sanchez, Adriana Kaley",
+      "affiliation": "Purdue University"
+    },
+    {
+      "name": "Dagar, Manisha",
+      "affiliation": "Purdue University"
+    },
+    {
+      "name": "Boland, Katrina",
+      "affiliation": "Purdue University"
+    },
+    {
+      "name": "Borlina, Cauê Sciascia",
+      "affiliation": "Purdue University"
+    },
+    {
+      "name": "Porterfield, D. Marshall",
+      "affiliation": "Purdue University"
+    }
+  ],
+  "access_right": "open",
+  "license": "CC-BY-4.0",
+  "upload_type": "publication",
+  "publication_type": "article",
+  "keywords": [
+    "Lunar magnetic field",
+    "Martian magnetic field",
+    "Hypomagnetic field",
+    "Space biology",
+    "Artemis landing sites",
+    "Bioregenerative life support",
+    "Cryptochrome"
+  ]
+}

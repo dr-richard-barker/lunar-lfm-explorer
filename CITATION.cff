@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this research or dataset, please cite it as below."
+title: "Comparative Planetary Magnetobiology of the Moon and Mars: Integrated Geophysical Mapping, Hypomagnetic Stress Synthesis, and Operational Life Support Frameworks for Deep-Space Exploration"
+authors:
+  - family-names: Barker
+    given-names: Richard
+    email: rbarker2@purdue.edu
+    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
+  - family-names: Sanchez
+    given-names: Adriana Kaley
+    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
+  - family-names: Dagar
+    given-names: Manisha
+    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
+  - family-names: Boland
+    given-names: Katrina
+    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
+  - family-names: Borlina
+    given-names: Cauê Sciascia
+    affiliation: "Department of Earth, Atmospheric, and Planetary Sciences, Purdue University"
+  - family-names: Porterfield
+    given-names: D. Marshall
+    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
+repository-code: "https://github.com/dr-richard-barker/lunar-mars-magnetic-biology"
+url: "https://dr-richard-barker.github.io/lunar-mars-magnetic-biology/"
+type: article
+license: CC-BY-4.0
+keywords:
+  - space biology
+  - hypomagnetic field
+  - Artemis
+  - Mars human exploration
+  - magnetoreception
+  - bioregenerative life support

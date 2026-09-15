@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparative Planetary Magnetobiology of the Moon and Mars</title>
+  <link rel="stylesheet" href="assets/cose-theme.css">
+  <script defer src="https://visitor-analytics.astrobotany.workers.dev/a.js"></script>
+</head>
+<body data-site-id="lunar-mars-magnetic-biology">
+
+  <header class="cose-header">
+    <div class="cose-header-content">
+      <span class="cose-badge">npj Microgravity / Research Showcase</span>
+      <h1 style="margin-top: 0.5rem;">Comparative Planetary Magnetobiology of the Moon and Mars</h1>
+      <p>Integrated Geophysical Mapping, Hypomagnetic Stress Synthesis, and Operational Life Support Frameworks for Deep-Space Exploration</p>
+      <div>
+        <strong>Authors:</strong> Richard Barker<sup>1,*</sup>, Adriana Kaley Sanchez<sup>1</sup>, Manisha Dagar<sup>1</sup>, Katrina Boland<sup>1</sup>, Cauê Sciascia Borlina<sup>2</sup>, D. Marshall Porterfield<sup>1</sup><br>
+        <small><sup>1</sup>Department of Agricultural and Biological Engineering, Purdue University | <sup>2</sup>Department of Earth, Atmospheric, and Planetary Sciences, Purdue University</small>
+      </div>
+      <div style="margin-top: 1.5rem;">
+        <a href="https://github.com/dr-richard-barker/lunar-mars-magnetic-biology/raw/main/manuscript/main.pdf" class="cose-btn" target="_blank">📄 Download PDF Manuscript</a>
+        <a href="https://github.com/dr-richard-barker/lunar-mars-magnetic-biology/raw/main/data/unified_36_landing_sites.csv" class="cose-btn" style="background: var(--cose-accent);" target="_blank">📊 Download 36-Site Dataset (CSV)</a>
+        <a href="https://github.com/dr-richard-barker/lunar-mars-magnetic-biology" class="cose-btn" style="background: #333;" target="_blank">💻 GitHub Repository</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cose-container">
+
+    <!-- Abstract Card -->
+    <section class="cose-card" style="margin-bottom: 2rem;">
+      <h2>Executive Abstract</h2>
+      <p>
+        Terrestrial life evolved over four billion years within the continuous, protective presence of Earth's geomagnetic field (GMF; ~50 µT). As space agencies prepare for sustained human presence on the Moon (Artemis program) and Mars, biological systems—including crops in bioregenerative life support systems (BLSS), closed-loop microbiomes, and human crew—will be permanently uprooted from this evolutionary baseline into severe hypomagnetic field (HMF) environments.
+      </p>
+      <p>
+        In this study, we present an integrated planetary magnetobiology investigation combining calibrated orbital and surface magnetometer datasets across <strong>36 candidate, historical, and contemporary landing sites</strong> on the Moon (23 sites) and Mars (13 sites). We show that all 13 Artemis III candidate South Polar landing regions on the Moon reside within an ultra-low, near-null crustal magnetic baseline (<strong>|B<sub>30km</sub>| &lt; 1.0 nT</strong>, &gt;50,000× to &gt;125,000× weaker than Earth). On Mars, we resolve a profound hemispheric dichotomy: ice-rich northern lowland candidate habitat sites (Arcadia Planitia, Deuteronilus Mensae) experience extreme near-null hypomagnetism (<strong>|B<sub>surf</sub>| &lt; 25 nT</strong>), whereas southern highland anomaly belts (Terra Sirenum) harbor intense remnant crustal fields (<strong>|B<sub>surf</sub>| &gt; 1500 nT</strong>) forming mini-magnetospheres. InSight magnetometry confirms ground-level bedrock amplification (<strong>~2013 nT</strong>).
+      </p>
+    </section>
+
+    <!-- Key Findings Grid -->
+    <h2>Key Scientific Discoveries</h2>
+    <div class="cose-grid">
+      <div class="cose-card">
+        <h3>🌕 The Lunar Polar Null Regime</h3>
+        <p>All 13 candidate Artemis III South Polar landing sites experience fields <strong>&lt;1.0 nT</strong> at 30 km altitude. This near-null baseline is 50,000× to 125,000× weaker than Earth's geomagnetic field, imposing chronic hypomagnetic stress on biological payloads.</p>
+      </div>
+      <div class="cose-card">
+        <h3>🔴 Martian Hemispheric Dichotomy</h3>
+        <p>Mars presents two divergent magnetic regimes: demagnetized northern lowlands (Arcadia ISRU candidate sites &lt;20 nT) vs. magnetized southern highlands (Terra Sirenum &gt;1500 nT mini-magnetospheres capable of plasma deflection).</p>
+      </div>
+      <div class="cose-card">
+        <h3>🌱 Biophysical Stress Mechanisms</h3>
+        <p>HMF exposure disrupts cryptochrome/phytochrome light sensing, PIN2 polar auxin transport, iron homeostasis, and thylakoid ultrastructure in plants, while accelerating osteoclastic bone loss in mammalian models.</p>
+      </div>
+      <div class="cose-card">
+        <h3>⚡ Active Helmholtz Mitigation</h3>
+        <p>We propose active magnetic restoration arrays (~50 µT artificial GMF) inside extraterrestrial growth chambers and standardized fluxgate magnetometers on precursor landers.</p>
+      </div>
+    </div>
+
+    <!-- 36 Landing Site Dataset Table -->
+    <h2>Geospatial Magnetic Dataset Across 36 Planetary Landing Sites</h2>
+    <p>Filtered dataset comparing magnetic field magnitudes at mapping altitude and estimated ground surface intensity:</p>
+
+    <div class="cose-table-wrapper">
+      <table class="cose-table">
+        <thead>
+          <tr>
+            <th>Landing Site / Region</th>
+            <th>Body / Mission</th>
+            <th>Latitude (°)</th>
+            <th>Longitude (°E)</th>
+            <th>|B<sub>orb</sub>| (nT)</th>
+            <th>|B<sub>surf</sub>| (nT)</th>
+            <th>Classification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Lunar Artemis Sites -->
+          <tr style="background: rgba(31, 119, 180, 0.1); font-weight: bold;"><td colspan="7">Lunar Artemis III Candidate South Polar Regions (30 km Baseline)</td></tr>
+          <tr><td>Faustini Rim A</td><td>Moon / Artemis III</td><td>-85.30</td><td>77.00</td><td>0.45</td><td>0.45</td><td><span style="color: #1f77b4; font-weight: bold;">Low/Null-Field</span></td></tr>
+          <tr><td>Peak Near Shackleton</td><td>Moon / Artemis III</td><td>-89.70</td><td>166.00</td><td>0.82</td><td>0.82</td><td><span style="color: #1f77b4; font-weight: bold;">Low/Null-Field</span></td></tr>
+          <tr><td>Connecting Ridge</td><td>Moon / Artemis III</td><td>-88.00</td><td>137.00</td><td>0.60</td><td>0.60</td><td><span style="color: #1f77b4; font-weight: bold;">Low/Null-Field</span></td></tr>
+          <tr><td>Haworth</td><td>Moon / Artemis III</td><td>-87.40</td><td>358.00</td><td>0.40</td><td>0.40</td><td><span style="color: #1f77b4; font-weight: bold;">Low/Null-Field</span></td></tr>
+          <tr><td>Amundsen Rim</td><td>Moon / Artemis III</td><td>-84.50</td><td>85.00</td><td>0.65</td><td>0.65</td><td><span style="color: #1f77b4; font-weight: bold;">Low/Null-Field</span></td></tr>
+          <!-- Historical Lunar -->
+          <tr style="background: rgba(31, 119, 180, 0.1); font-weight: bold;"><td colspan="7">Historical Lunar Missions</td></tr>
+          <tr><td>Apollo 11</td><td>Moon / Apollo</td><td>0.67</td><td>23.47</td><td>0.93</td><td>0.93</td><td>Low/Null-Field</td></tr>
+          <tr><td>Apollo 16 (Highlands)</td><td>Moon / Apollo</td><td>-8.97</td><td>15.50</td><td>4.94</td><td>4.94</td><td><span style="color: darkorange; font-weight: bold;">Moderate-Field</span></td></tr>
+          <tr><td>Chang'e 4 (SPA Basin)</td><td>Moon / Chang'e</td><td>-45.46</td><td>177.60</td><td>0.72</td><td>0.72</td><td>Low/Null-Field</td></tr>
+          <!-- Mars Sites -->
+          <tr style="background: rgba(214, 39, 40, 0.1); font-weight: bold;"><td colspan="7">Martian Landing Sites & Human Candidate Base Outposts</td></tr>
+          <tr><td>Jezero Crater (Perseverance)</td><td>Mars / Mars 2020</td><td>18.45</td><td>77.45</td><td>2.75</td><td>23.40</td><td>Low/Null-Field</td></tr>
+          <tr><td>Arcadia Planitia (ISRU Base)</td><td>Mars / Human Candidate</td><td>39.30</td><td>189.70</td><td>0.71</td><td>6.00</td><td><span style="color: #1f77b4; font-weight: bold;">Low/Null-Field (&lt;25 nT)</span></td></tr>
+          <tr><td>Elysium Planitia (InSight)</td><td>Mars / Discovery</td><td>4.50</td><td>135.62</td><td>1.99</td><td>2013.00</td><td><span style="color: red; font-weight: bold;">High-Field Outpost</span></td></tr>
+          <tr><td>Terra Sirenum Anomaly Belt</td><td>Mars / Science Base</td><td>-30.00</td><td>195.00</td><td>140.07</td><td>1190.60</td><td><span style="color: red; font-weight: bold;">High-Field Outpost (&gt;1500 nT)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Multi-Planetary Risk Matrix -->
+    <h2>Multi-Planetary Biological Risk Matrix</h2>
+    <div class="cose-table-wrapper">
+      <table class="cose-table">
+        <thead>
+          <tr>
+            <th>Biological System</th>
+            <th>Earth GMF (~50 µT)</th>
+            <th>Mars Sirenum (&gt;1000 nT)</th>
+            <th>Mars InSight (~2000 nT)</th>
+            <th>Mars Northern Plains (&lt;25 nT)</th>
+            <th>Lunar Highlands (1–5 nT)</th>
+            <th>Lunar South Pole (&lt;1.0 nT)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Plant Vegetative Biomass</td><td>Baseline</td><td>Low Risk</td><td>Low Risk</td><td style="color: red; font-weight: bold;">High Risk</td><td>Moderate Risk</td><td style="color: red; font-weight: bold;">High Risk</td></tr>
+          <tr><td>Plant Flowering & Seed Set</td><td>Baseline</td><td>Moderate Risk</td><td>Moderate Risk</td><td style="color: red; font-weight: bold;">High Risk</td><td>Moderate-High Risk</td><td style="color: red; font-weight: bold;">High Risk</td></tr>
+          <tr><td>Closed-Loop Microbiome</td><td>Baseline</td><td>Low Risk</td><td>Low Risk</td><td>Moderate Risk</td><td>Low-Moderate Risk</td><td>Moderate Risk</td></tr>
+          <tr><td>Circadian Clocks</td><td>Baseline</td><td>Low-Moderate Risk</td><td>Low-Moderate Risk</td><td style="color: red; font-weight: bold;">High Risk</td><td>Moderate-High Risk</td><td style="color: red; font-weight: bold;">High Risk</td></tr>
+          <tr><td>Human Musculoskeletal</td><td>Baseline</td><td>Moderate Risk</td><td>Moderate Risk</td><td style="color: red; font-weight: bold;">High Risk</td><td style="color: red; font-weight: bold;">High Risk</td><td style="color: red; font-weight: bold;">High Risk</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Citation Block -->
+    <h2>BibTeX Citation</h2>
+    <div class="cose-card" style="background: #272822; color: #f8f8f2; font-family: monospace; white-space: pre-wrap; font-size: 0.85rem;">
+@unpublished{Barker2026_ComparativeMagnetobiology,
+  author    = {Barker, Richard and Sanchez, Adriana Kaley and Dagar, Manisha and Boland, Katrina and Borlina, Cau{\^{e}} Sciascia and Porterfield, D. Marshall},
+  title     = {Comparative Planetary Magnetobiology of the Moon and Mars: Integrated Geophysical Mapping, Hypomagnetic Stress Synthesis, and Operational Life Support Frameworks for Deep-Space Exploration},
+  note      = {Manuscript in preparation},
+  year      = {2026},
+  url       = {https://github.com/dr-richard-barker/lunar-mars-magnetic-biology}
+}
+    </div>
+
+  </main>
+
+  <footer class="cose-footer">
+    <p>© 2026 Space Biology & Bioengineering Research Group, Purdue University. Licensed under CC-BY-4.0.</p>
+  </footer>
+
+  <script src="assets/theme.js"></script>
+  <script src="assets/sites.js"></script>
+</body>
+</html>
