@@ -70,9 +70,35 @@ def test_3d_solar_lab_js_registration():
     assert "function init3DSolarLab()" in js, "function init3DSolarLab not defined"
 
 
+def test_camera_presets_and_autorotate():
+    """Verify all camera presets and auto-rotate controls are present and wired."""
+    html_path = ROOT_DIR / "docs" / "index.html"
+    with open(html_path, "r", encoding="utf-8") as f:
+        html = f.read()
+
+    assert 'id="lab-btn-autorotate"' in html, "Missing #lab-btn-autorotate toggle button"
+    assert 'data-orbit="45deg 60deg 45m"' in html, "Missing Overview Orbit preset"
+    assert 'data-orbit="135deg 75deg 20m"' in html, "Missing Connecting Ridge preset"
+    assert 'data-orbit="110deg 70deg 25m"' in html, "Missing Peak Near Shackleton preset"
+    assert 'data-orbit="0deg 85deg 18m"' in html, "Missing Crater Abyss preset"
+    assert 'data-orbit="0deg 0deg 40m"' in html, "Missing Nadir Top-Down preset"
+
+
+def test_touch_target_accessibility():
+    """Verify CSS enforces >= 44px min-height touch targets pursuant to ABAI L027."""
+    css_path = ROOT_DIR / "docs" / "style.css"
+    with open(css_path, "r", encoding="utf-8") as f:
+        css = f.read()
+
+    assert ".btn-cam-preset" in css
+    assert "min-height: 44px;" in css, "Camera preset buttons do not satisfy >=44px touch target (ABAI L027)"
+
+
 if __name__ == "__main__":
     test_3d_models_exist_and_sizes()
     test_gltf_binary_header()
     test_3d_solar_lab_html_integration()
     test_3d_solar_lab_js_registration()
+    test_camera_presets_and_autorotate()
+    test_touch_target_accessibility()
     print("All 3D Solar Lab tests passed.")

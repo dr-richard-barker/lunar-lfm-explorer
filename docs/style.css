@@ -677,11 +677,14 @@ body {
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   border-radius: var(--radius-sm);
-  padding: 6px 12px;
+  padding: 8px 14px;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.15s ease;
-  min-height: 40px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-cam-preset:hover {
@@ -690,10 +693,23 @@ body {
 }
 
 .btn-cam-preset.active {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: var(--accent-cyan);
-  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.25) !important;
+  border-color: var(--accent-cyan) !important;
+  color: #fff !important;
   font-weight: 600;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+}
+
+#lab-btn-autorotate {
+  margin-left: auto;
+  border-color: rgba(246, 195, 67, 0.4);
+}
+
+#lab-btn-autorotate.active {
+  background: rgba(246, 195, 67, 0.2) !important;
+  border-color: var(--accent-gold) !important;
+  color: var(--accent-gold) !important;
+  box-shadow: 0 0 8px rgba(246, 195, 67, 0.3);
 }
 
 .telemetry-grid {

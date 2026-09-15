@@ -182,7 +182,11 @@ function initTabs() {
       document.querySelectorAll(".tab-pane").forEach((pane) => {
         pane.classList.remove("active");
       });
-      document.getElementById(targetId)?.classList.add("active");
+      const targetPane = document.getElementById(targetId);
+      if (targetPane) {
+        targetPane.classList.add("active");
+        window.dispatchEvent(new Event("resize"));
+      }
     });
   });
 }
@@ -749,7 +753,9 @@ function init3DSolarLab() {
 
       // Switch 3D GLB model
       if (modelFile) {
-        modelViewer.src = `assets/3d/${modelFile}`;
+        const fullPath = `assets/3d/${modelFile}`;
+        modelViewer.src = fullPath;
+        modelViewer.setAttribute("src", fullPath);
         if (badgeStatus) {
           badgeStatus.textContent = `🌕 3D Model: ${regime} · 766 KB glTF · Drag to Orbit / Scroll to Zoom`;
         }
@@ -782,10 +788,31 @@ function init3DSolarLab() {
     });
   });
 
-  // Camera preset buttons
-  camButtons.forEach((btn) => {
+  const camPresetButtons = document.querySelectorAll(".cam-presets-bar .btn-cam-preset:not(#lab-btn-autorotate)");
+  const autoRotateBtn = document.getElementById("lab-btn-autorotate");
+
+  // Auto-rotate toggle handler
+  if (autoRotateBtn) {
+    autoRotateBtn.addEventListener("click", () => {
+      const isRotating = modelViewer.hasAttribute("auto-rotate") || modelViewer.autoRotate;
+      if (isRotating) {
+        modelViewer.removeAttribute("auto-rotate");
+        try { modelViewer.autoRotate = false; } catch (e) {}
+        autoRotateBtn.textContent = "▶️ Auto-Rotate: OFF";
+        autoRotateBtn.classList.remove("active");
+      } else {
+        modelViewer.setAttribute("auto-rotate", "");
+        try { modelViewer.autoRotate = true; } catch (e) {}
+        autoRotateBtn.textContent = "🔄 Auto-Rotate: ON";
+        autoRotateBtn.classList.add("active");
+      }
+    });
+  }
+
+  // Camera preset buttons with smart stabilization
+  camPresetButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      camButtons.forEach((b) => b.classList.remove("active"));
+      camPresetButtons.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
       const orbit = btn.getAttribute("data-orbit");
@@ -793,9 +820,28 @@ function init3DSolarLab() {
 
       if (modelViewer && orbit) {
         modelViewer.setAttribute("camera-orbit", orbit);
+        try { modelViewer.cameraOrbit = orbit; } catch (e) {}
       }
       if (modelViewer && target) {
         modelViewer.setAttribute("camera-target", target);
+        try { modelViewer.cameraTarget = target; } catch (e) {}
+      }
+
+      // Smart stabilization: pause auto-rotate on feature viewpoints, resume on Overview
+      if (btn.textContent.includes("Overview Orbit")) {
+        modelViewer.setAttribute("auto-rotate", "");
+        try { modelViewer.autoRotate = true; } catch (e) {}
+        if (autoRotateBtn) {
+          autoRotateBtn.textContent = "🔄 Auto-Rotate: ON";
+          autoRotateBtn.classList.add("active");
+        }
+      } else {
+        modelViewer.removeAttribute("auto-rotate");
+        try { modelViewer.autoRotate = false; } catch (e) {}
+        if (autoRotateBtn) {
+          autoRotateBtn.textContent = "▶️ Auto-Rotate: OFF";
+          autoRotateBtn.classList.remove("active");
+        }
       }
     });
   });
