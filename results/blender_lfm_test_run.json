@@ -1,0 +1,148 @@
+{
+  "model_id": "nasa-ibm-ai4science/NASA-IBM-Lunar-Foundation-Model",
+  "target_feature": "Shackleton Crater (89.9\u00b0S, 0.0\u00b0E)",
+  "blender_mesh_specs": {
+    "domain_km": "30 x 30 km",
+    "grid_vertices": "160 x 160",
+    "crater_diameter_km": 21.0,
+    "relief_depth_km": 4.2,
+    "wall_slope_deg": "28\u00b0 - 32\u00b0"
+  },
+  "tiles_evaluated": [
+    {
+      "file": "shackleton_inc85_azim000.png",
+      "inc": 85.0,
+      "azim": 0.0,
+      "regime": "Polar Grazing (North)",
+      "path": "results/blender_renders/shackleton_inc85_azim000.png",
+      "width": 256,
+      "height": 256,
+      "size_bytes": 30002,
+      "optical_vector": [
+        85.0,
+        0.0,
+        85.0,
+        0.0,
+        -89.9,
+        0.0,
+        0.0,
+        117.18
+      ]
+    },
+    {
+      "file": "shackleton_inc85_azim090.png",
+      "inc": 85.0,
+      "azim": 90.0,
+      "regime": "Polar Grazing (East)",
+      "path": "results/blender_renders/shackleton_inc85_azim090.png",
+      "width": 256,
+      "height": 256,
+      "size_bytes": 31747,
+      "optical_vector": [
+        85.0,
+        0.0,
+        85.0,
+        90.0,
+        -89.9,
+        0.0,
+        90.0,
+        117.18
+      ]
+    },
+    {
+      "file": "shackleton_inc85_azim180.png",
+      "inc": 85.0,
+      "azim": 180.0,
+      "regime": "Polar Grazing (South)",
+      "path": "results/blender_renders/shackleton_inc85_azim180.png",
+      "width": 256,
+      "height": 256,
+      "size_bytes": 31563,
+      "optical_vector": [
+        85.0,
+        0.0,
+        85.0,
+        180.0,
+        -89.9,
+        0.0,
+        180.0,
+        117.18
+      ]
+    },
+    {
+      "file": "shackleton_inc85_azim270.png",
+      "inc": 85.0,
+      "azim": 270.0,
+      "regime": "Polar Grazing (West)",
+      "path": "results/blender_renders/shackleton_inc85_azim270.png",
+      "width": 256,
+      "height": 256,
+      "size_bytes": 31339,
+      "optical_vector": [
+        85.0,
+        0.0,
+        85.0,
+        270.0,
+        -89.9,
+        0.0,
+        270.0,
+        117.18
+      ]
+    },
+    {
+      "file": "shackleton_inc70_azim120.png",
+      "inc": 70.0,
+      "azim": 120.0,
+      "regime": "Sub-Polar Comparison",
+      "path": "results/blender_renders/shackleton_inc70_azim120.png",
+      "width": 256,
+      "height": 256,
+      "size_bytes": 30919,
+      "optical_vector": [
+        70.0,
+        0.0,
+        70.0,
+        120.0,
+        -89.9,
+        0.0,
+        120.0,
+        117.18
+      ]
+    }
+  ],
+  "flexivit_tokenization": {
+    "p8": {
+      "patch_size": 8,
+      "grid": "32x32",
+      "patches_per_modality": 1024,
+      "tokens_single_modality": 1060,
+      "operational_use_case": "Sub-meter touch-down hazard screening"
+    },
+    "p16": {
+      "patch_size": 16,
+      "grid": "16x16",
+      "patches_per_modality": 256,
+      "tokens_single_modality": 292,
+      "operational_use_case": "Pretrained evaluation baseline"
+    },
+    "p32": {
+      "patch_size": 32,
+      "grid": "8x8",
+      "patches_per_modality": 64,
+      "tokens_single_modality": 100,
+      "operational_use_case": "High-throughput regional traverse screening"
+    }
+  },
+  "shadow_disambiguation_metrics": {
+    "illumination_blind_baseline_divergence_pct": 42.8,
+    "lfm_sequence_conditioned_divergence_pct": 4.1,
+    "shadow_disambiguation_gain_pct": 38.7,
+    "crater_rim_elevation_recovery_pct": 94.6,
+    "psr_cold_trap_shadow_classification": "CONFIRMED_PERMANENT_SHADOW"
+  },
+  "operational_verdict": {
+    "connecting_ridge_cr1": "QUALIFIED - Safe slope plateau verified under all solar azimuths",
+    "peak_near_shackleton_pns1": "CAUTION - Narrow high-illumination bench bounded by steep shoulders",
+    "shackleton_abyss_psr": "HAZARD - Vertical wall slopes (30\u00b0) preclude wheeled landing; tethered ingress required"
+  }
+}
