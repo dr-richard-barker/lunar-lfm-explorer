@@ -1,0 +1,20 @@
+# OS junk
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# TeX build artifacts
+manuscript/*.aux
+manuscript/*.log
+manuscript/*.out
+manuscript/*.bbl
+manuscript/*.blg
+manuscript/*.toc
+manuscript/*.fls
+manuscript/*.fdb_latexmk
+
+# Python build artifacts
+__pycache__/
+*.pyc
