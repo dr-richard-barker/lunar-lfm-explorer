@@ -1,18 +1,16 @@
-.PHONY: all clean dataset figures pdf
+.PHONY: all test verify serve clean
 
-all: dataset figures pdf
+all: test verify
 
-dataset:
-	python3 scripts/generate_unified_dataset.py
+test:
+	python3 tests/run_all_tests.py
 
-figures:
-	python3 scripts/generate_unified_figures.py
+verify:
+	python3 scripts/verify_fair_compliance.py
 
-pdf:
-	cd manuscript && pdflatex -interaction=nonstopmode main.tex
-	cd manuscript && bibtex main
-	cd manuscript && pdflatex -interaction=nonstopmode main.tex
-	cd manuscript && pdflatex -interaction=nonstopmode main.tex
+serve:
+	python3 scripts/run_explorer.py --serve --port 8088
 
 clean:
-	rm -rf manuscript/*.aux manuscript/*.log manuscript/*.out manuscript/*.bbl manuscript/*.blg manuscript/*.toc manuscript/*.pdf
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
