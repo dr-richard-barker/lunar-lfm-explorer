@@ -1,34 +1,93 @@
 cff-version: 1.2.0
-message: "If you use this research or dataset, please cite it as below."
-title: "Comparative Planetary Magnetobiology of the Moon and Mars: Integrated Geophysical Mapping, Hypomagnetic Stress Synthesis, and Operational Life Support Frameworks for Deep-Space Exploration"
-authors:
-  - family-names: Barker
-    given-names: Richard
-    email: rbarker2@purdue.edu
-    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
-  - family-names: Sanchez
-    given-names: Adriana Kaley
-    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
-  - family-names: Dagar
-    given-names: Manisha
-    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
-  - family-names: Boland
-    given-names: Katrina
-    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
-  - family-names: Borlina
-    given-names: Cauê Sciascia
-    affiliation: "Department of Earth, Atmospheric, and Planetary Sciences, Purdue University"
-  - family-names: Porterfield
-    given-names: D. Marshall
-    affiliation: "Department of Agricultural and Biological Engineering, Purdue University"
-repository-code: "https://github.com/dr-richard-barker/lunar-mars-magnetic-biology"
-url: "https://dr-richard-barker.github.io/lunar-mars-magnetic-biology/"
-type: article
-license: CC-BY-4.0
+message: "If you use this software or the underlying NASA-IBM Lunar Foundation Model representations in your research, please cite both this repository and the foundational publications below."
+title: "lunar-lfm-explorer: FAIR Exploration Toolkit for the NASA-IBM Lunar Foundation Model"
+abstract: "A FAIR-compliant scientific toolkit and interactive explorer for the NASA-IBM Lunar Foundation Model (ViT-B multimodal remote sensing encoder-decoder trained on SomBench's 2 million lunar tile bundles across 11 modalities and 2 scale families)."
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/dr-richard-barker/Lunar_analysis"
 keywords:
-  - space biology
-  - hypomagnetic field
-  - Artemis
-  - Mars human exploration
-  - magnetoreception
-  - bioregenerative life support
+  - "lunar remote sensing"
+  - "foundation model"
+  - "multimodal"
+  - "vision transformer"
+  - "planetary science"
+  - "LROC"
+  - "SomBench"
+  - "NASA IBM AI for Science"
+  - "FAIR software"
+
+authors:
+  - family-names: "Barker"
+    given-names: "Richard"
+    orcid: "https://orcid.org/0000-0002-3908-4177"
+
+references:
+  - type: article
+    title: "Multimodal-Multiresolution Foundation Model for Lunar Remote Sensing"
+    authors:
+      - family-names: "Fraccaro"
+        given-names: "Paolo"
+      - family-names: "Nyirjesy"
+        given-names: "Gabby"
+      - family-names: "Szwarcman"
+        given-names: "Daniela"
+      - family-names: "Patil"
+        given-names: "Himanshu"
+      - family-names: "Gaur"
+        given-names: "Vishal"
+      - family-names: "Lal"
+        given-names: "Rohit"
+      - family-names: "Slank"
+        given-names: "Rachel A."
+      - family-names: "Dawson"
+        given-names: "Geoffrey"
+      - family-names: "Debary"
+        given-names: "Hiyam"
+      - family-names: "Dionelis"
+        given-names: "Nikolaos"
+      - family-names: "Barker"
+        given-names: "Michael K."
+      - family-names: "Annex"
+        given-names: "Andrew"
+      - family-names: "Viswanathan"
+        given-names: "Vishnu"
+      - family-names: "Morse"
+        given-names: "Zachary"
+      - family-names: "Schaefer"
+        given-names: "Ethan I."
+      - family-names: "Kumar"
+        given-names: "Ankur"
+      - family-names: "Watson"
+        given-names: "Campbell D."
+      - family-names: "Dawson-Rigas"
+        given-names: "Rebekah I."
+      - family-names: "Maskey"
+        given-names: "Manil"
+      - family-names: "Roy"
+        given-names: "Sujit"
+      - family-names: "Ramachandran"
+        given-names: "Rahul"
+      - family-names: "Bernabé-Moreno"
+        given-names: "Juan"
+    year: 2026
+    url: "https://huggingface.co/nasa-ibm-ai4science/NASA-IBM-Lunar-Foundation-Model/blob/main/NI_LFM_Technical_Report.pdf"
+
+  - type: data
+    title: "SomBench: Benchmark Dataset for Advancing Machine Learning in Lunar Science"
+    authors:
+      - family-names: "Patil"
+        given-names: "Himanshu"
+      - family-names: "Nyirjesy"
+        given-names: "Gabby"
+      - family-names: "Slank"
+        given-names: "Rachel A."
+      - family-names: "Gaur"
+        given-names: "Vishal"
+      - family-names: "Szwarcman"
+        given-names: "Daniela"
+      - family-names: "Fraccaro"
+        given-names: "Paolo"
+      - family-names: "Roy"
+        given-names: "Sujit"
+    year: 2026
+    url: "https://huggingface.co/collections/nasa-ibm-ai4science/lunar-fm-ml-ready-benchmark-dataset-sombench"

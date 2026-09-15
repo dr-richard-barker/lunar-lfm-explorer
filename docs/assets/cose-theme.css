@@ -1,138 +1,111 @@
-:root {
-  --cose-primary: #004d73;
-  --cose-dark-blue: #003049;
-  --cose-accent: #d62828;
-  --cose-bg: #f8f9fa;
-  --cose-card-bg: #ffffff;
-  --cose-text: #212529;
-  --cose-muted: #6c757d;
-  --cose-border: #e9ecef;
+/* ============================================================================
+   COSE overlay theme (v0.1) — NASA/AstroBotany estate theme.
+   ========================================================================== */
+
+:root{
+  --bg:#ffffff; --fg:#1a2230; --muted:#5a6473; --line:#e5e9f0;
+  --card:#f7f9fc; --accent:#3B6EA5; --accent2:#3FB6A8;
+  --rail:288px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f141b; --fg:#e6ebf2; --muted:#9aa6b6; --line:#232c39;
+         --card:#161d27; --accent:#6ea3d8; --accent2:#54c9ba; }
 }
 
-[data-theme="dark"] {
-  --cose-bg: #0b131f;
-  --cose-card-bg: #152238;
-  --cose-text: #e2e8f0;
-  --cose-muted: #94a3b8;
-  --cose-border: #1e293b;
+.sitebar.cose-dark, .topbar.cose-dark{
+  --bg:#0f141b; --fg:#e6ebf2; --muted:#9aa6b6; --line:#2b3543;
+  --card:#161d27; --accent:#6ea3d8; --accent2:#54c9ba; }
+.sitebar.cose-light, .topbar.cose-light{
+  --bg:#ffffff; --fg:#1a2230; --muted:#5a6473; --line:#e5e9f0;
+  --card:#f7f9fc; --accent:#3B6EA5; --accent2:#3FB6A8; }
+.sitebar.cose-dark{background:#161d27;border-right-color:#2b3543}
+
+html[data-theme="light"]{
+  --bg:#ffffff; --fg:#1a2230; --ink:#1a2230; --muted:#5a6473; --line:#e5e9f0;
+  --border:#e5e9f0; --card:#f7f9fc; --soft:#f7f9fc; --code:#f1f5f9;
+  --accent:#3B6EA5; --accent2:#3FB6A8; color-scheme:light;
+}
+html[data-theme="dark"]{
+  --bg:#0f141b; --fg:#e6ebf2; --ink:#e6ebf2; --muted:#9aa6b6; --line:#232c39;
+  --border:#232c39; --card:#161d27; --soft:#161d27; --code:#0f1a2e;
+  --accent:#6ea3d8; --accent2:#54c9ba; color-scheme:dark;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--cose-bg);
-  color: var(--cose-text);
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
+header.site nav{ padding-left:96px }
+@media (max-width:560px){ header.site nav{ padding-left:84px } }
+
+.topbar{position:fixed;top:12px;left:12px;z-index:40;display:flex;align-items:center;gap:8px}
+.cose-brand{display:inline-flex;align-items:center;line-height:0}
+.cose-brand img{height:30px;width:30px;display:block;border-radius:7px}
+.cose-brand:hover{filter:brightness(1.05)}
+
+.map-toggle{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);color:var(--fg);
+  font:600 .85rem/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.map-toggle:hover{filter:brightness(.98)}
+.map-toggle .bars{display:inline-block;width:16px;height:12px;position:relative}
+.map-toggle .bars::before,.map-toggle .bars::after,.map-toggle .bars span{
+  content:"";position:absolute;left:0;right:0;height:2px;border-radius:2px;background:currentColor}
+.map-toggle .bars::before{top:0}.map-toggle .bars span{top:5px}.map-toggle .bars::after{top:10px}
+.map-toggle .lbl{display:none}
+@media (min-width:900px){ .map-toggle .lbl{display:inline} }
+
+.cose-theme-btn{display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:34px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);color:var(--fg);
+  box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.cose-theme-btn:hover{filter:brightness(.98)}
+.cose-theme-btn svg{display:block}
+@media (min-width:1180px){
+  body.map-open .cose-theme-btn{background:transparent;border-color:transparent;box-shadow:none}
 }
 
-.cose-header {
-  background-color: var(--cose-dark-blue);
-  color: #ffffff;
-  padding: 2.5rem 1.5rem;
-  border-bottom: 4px solid var(--cose-accent);
-}
+.sitebar{
+  position:fixed;top:0;left:0;bottom:0;width:var(--rail);z-index:39;
+  background:var(--card);border-right:1px solid var(--line);
+  transform:translateX(-100%);transition:transform .22s ease;
+  overflow-y:auto;padding:64px 0 24px;
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body.map-open .sitebar{transform:translateX(0)}
+.sitebar .cose-panel{padding:14px 20px}
+.sitebar h4{margin:0 0 4px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.sitebar .cose-switch{display:flex;gap:4px;margin:0 20px 6px;
+  background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px}
+.sitebar .cose-switch button{flex:1;border:0;background:transparent;color:var(--muted);
+  font:600 .82rem/1 inherit;padding:7px 6px;border-radius:6px;cursor:pointer}
+.sitebar .cose-switch button[aria-selected="true"]{background:var(--accent);color:#fff}
 
-.cose-header-content {
-  max-width: 1100px;
-  margin: 0 auto;
-}
+.docmap{list-style:none;margin:6px 0 0;padding:0}
+.docmap li{margin:0}
+.docmap a{display:block;padding:6px 20px;color:var(--muted);
+  font-size:.9rem;border-left:2px solid transparent;line-height:1.35;text-decoration:none}
+.docmap a:hover{color:var(--fg)}
+.docmap a.cose-active{color:var(--accent);border-left-color:var(--accent);
+  background:linear-gradient(90deg,rgba(59,110,165,.08),transparent)}
+.docmap a.lvl-3{padding-left:34px;font-size:.85rem}
 
-.cose-header h1 {
-  font-size: 2rem;
-  margin: 0 0 1rem 0;
-  font-weight: 700;
-  line-height: 1.25;
-}
+.sitemap{list-style:none;margin:6px 0 0;padding:0}
+.sitemap li{margin:0}
+.sitemap a{display:block;padding:9px 20px;color:var(--fg);font-size:.9rem;line-height:1.25;text-decoration:none}
+.sitemap a:hover{background:rgba(59,110,165,.06)}
+.sitemap a.cose-current{border-left:2px solid var(--accent2);background:rgba(63,182,168,.08)}
+.sitemap a small{display:block;color:var(--muted);font-size:.78rem;font-weight:400;margin-top:2px}
+.sitemap .cose-group{padding:14px 20px 4px;font-size:.7rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);font-weight:700}
 
-.cose-header p {
-  font-size: 1.1rem;
-  color: #e0e0e0;
-  margin: 0 0 1.5rem 0;
-}
+.map-scrim{position:fixed;inset:0;background:rgba(10,15,22,.38);z-index:38;
+  opacity:0;visibility:hidden;transition:opacity .2s}
+body.map-open .map-scrim{opacity:1;visibility:visible}
 
-.cose-badge {
-  display: inline-block;
-  background: var(--cose-accent);
-  color: #fff;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
+.cose-foot{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;margin-right:9px;font-weight:600}
+.cose-foot img{height:20px;width:20px;display:block;border-radius:5px}
+.cose-foot:hover{filter:brightness(1.05);text-decoration:none}
 
-.cose-container {
-  max-width: 1100px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
-}
-
-.cose-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.cose-card {
-  background: var(--cose-card-bg);
-  border: 1px solid var(--cose-border);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-}
-
-.cose-card h3 {
-  margin-top: 0;
-  color: var(--cose-primary);
-}
-
-.cose-table-wrapper {
-  overflow-x: auto;
-  background: var(--cose-card-bg);
-  border: 1px solid var(--cose-border);
-  border-radius: 8px;
-  margin: 1.5rem 0;
-}
-
-table.cose-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-table.cose-table th, table.cose-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--cose-border);
-  text-align: left;
-}
-
-table.cose-table th {
-  background: var(--cose-primary);
-  color: #ffffff;
-}
-
-.cose-btn {
-  display: inline-block;
-  background: var(--cose-primary);
-  color: #ffffff;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  margin-right: 0.5rem;
-  transition: background 0.2s;
-}
-
-.cose-btn:hover {
-  background: var(--cose-dark-blue);
-}
-
-.cose-footer {
-  text-align: center;
-  padding: 2rem;
-  border-top: 1px solid var(--cose-border);
-  color: var(--cose-muted);
-  font-size: 0.85rem;
+@media (min-width:1180px){
+  body.map-open .page{margin-left:var(--rail)}
+  body.map-open .map-scrim{display:none}
+  .map-toggle{background:transparent;border-color:transparent;box-shadow:none}
 }

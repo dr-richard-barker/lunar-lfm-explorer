@@ -1,20 +1,48 @@
-# OS junk
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-
-# TeX build artifacts
-manuscript/*.aux
-manuscript/*.log
-manuscript/*.out
-manuscript/*.bbl
-manuscript/*.blg
-manuscript/*.toc
-manuscript/*.fls
-manuscript/*.fdb_latexmk
-
-# Python build artifacts
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Model checkpoints & heavy weights (ABAI L022 - Zenodo / HF Hub boundary)
+# Code in Git, weights streamed/cached on demand
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+data/weights/
+data/raw/
+checkpoints/
+.cache/
+
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Testing & linting
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ABAI Attestation Record (ABAI check.md:59)
+.abai/
+
+# Operating Systems
+.DS_Store
+Thumbs.db

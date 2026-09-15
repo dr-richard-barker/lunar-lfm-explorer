@@ -1,0 +1,40 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "lunar-lfm-explorer",
+  "version": "0.1.0",
+  "description": "FAIR scientific exploration toolkit and interactive multi-device explorer for the NASA-IBM Lunar Foundation Model (ViT-B multimodal encoder-decoder trained on 2 million SomBench lunar tile bundles).",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "codeRepository": "https://github.com/dr-richard-barker/Lunar_analysis",
+  "programmingLanguage": [
+    "Python",
+    "JavaScript",
+    "HTML",
+    "CSS"
+  ],
+  "applicationCategory": "Remote Sensing / Planetary Science / Machine Learning",
+  "keywords": [
+    "lunar remote sensing",
+    "foundation model",
+    "NASA IBM",
+    "ViT-B",
+    "SomBench",
+    "multimodal",
+    "FAIR software",
+    "LROC",
+    "planetary science"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Richard",
+      "familyName": "Barker",
+      "@id": "https://orcid.org/0000-0002-3908-4177"
+    }
+  ],
+  "targetProduct": {
+    "@type": "SoftwareApplication",
+    "operatingSystem": "Cross-platform (Linux, macOS, Windows)"
+  },
+  "isBasedOn": "https://huggingface.co/nasa-ibm-ai4science/NASA-IBM-Lunar-Foundation-Model"
+}

@@ -1,0 +1,6 @@
+task_id,name,scale_family,metric,direction,best_lfm_score,best_lfm_config,best_baseline_score,best_baseline_name,random_init_lfm_score,key_takeaway
+robbins_craters_50,"Robbins Craters (50% Data)",WAC,mAP,maximize,"0.2541 ± 0.0018",Full Fine-Tuning,"0.2313 ± 0.0027",SwinV2-B,"0.2197 ± 0.0027","LFM with 50% data matches or exceeds SwinV2-B on 100% data."
+robbins_craters_100,"Robbins Craters (100% Data)",WAC,mAP,maximize,"0.2581 ± 0.0017","LoRA (r=16, a=32)","0.2420 ± 0.0047",SwinV2-B,"0.2289 ± 0.0037","LoRA fine-tuning outperforms full fine-tuning with narrower seed spread."
+nac_craters_meter_scale,"NAC Craters (Meter Scale)",NAC,mAP,maximize,"0.1543 ± 0.0098","LoRA (r=16, a=32)","0.1552 ± 0.0086",SwinV2-B,"0.1274 ± 0.0151","Leaders are comparable within seed spread; frozen encoder fails at meter scale."
+irregular_mare_patches,"Irregular Mare Patches (IMP)",NAC/WAC,IoU1,maximize,"0.5709 ± 0.0114",Frozen Encoder,"0.5687 ± 0.0181",ConvNeXtV2-B,"0.3142 ± 0.0746","Pretraining is essential: random-init collapses to 0.3142. Frozen encoder yields strongest generalization."
+polar_ice_prospectivity,"Polar Ice Prospectivity",WAC/Context,RMSE,minimize,"0.0293 ± 0.0013",Full Fine-Tuning,"0.0377 ± 0.0004",SwinV2-B,"0.0397 ± 0.0004","Widest margin: 22% lower RMSE. 3-modality LFM matches full 8-layer ConvNeXt-B."

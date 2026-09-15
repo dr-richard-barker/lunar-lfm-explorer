@@ -1,0 +1,27 @@
+{
+  "dataset_name": "SomBench",
+  "huggingface_id": "nasa-ibm-ai4science/Sombench-pretraining-data",
+  "tile_bundles": {
+    "WAC_total": 963609,
+    "NAC_total": 1000113,
+    "combined_total": 1963722
+  },
+  "spatial_scales": {
+    "WAC": {
+      "nominal_pixel_resolution_m": 100,
+      "tile_footprint_km": 51.2,
+      "dense_modalities": ["vis", "uv", "dtm", "slope", "aspect"]
+    },
+    "NAC": {
+      "nominal_pixel_resolution_m": 1,
+      "tile_footprint_km": 0.512,
+      "dense_modalities": ["nac", "dtm_3m", "slope_3m", "aspect_3m"]
+    }
+  },
+  "context_modalities": {
+    "optical_metadata_fields_count": 8,
+    "static_map_context_fields_count": 28
+  },
+  "pretraining_objective": "TerraMind any-to-any masked token modeling",
+  "tokenizers": "9 modality-specific VQ-VAEs with FSQ (8,8,8,6,5) and DDPM decoders"
+}

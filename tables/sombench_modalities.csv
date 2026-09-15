@@ -1,0 +1,10 @@
+key,family,name,channels,resolution_m,source_instrument,description
+vis,WAC,Visible Reflectance,5,100.0,LROC WAC,"5 visible color bands (415, 566, 604, 643, 689 nm)"
+uv,WAC,Ultraviolet Reflectance,2,500.0,LROC WAC,"2 UV bands (321, 360 nm)"
+dtm,WAC,Digital Terrain Model,1,60.0,SLDEM2015,"Global digital elevation model from LOLA and Kaguya TC"
+slope,WAC,Terrain Slope,1,60.0,SLDEM2015,"Surface topographic slope derived from SLDEM2015"
+aspect,WAC,Terrain Aspect,2,60.0,SLDEM2015,"Slope azimuth direction stored as sin/cos pair to avoid wrap-around"
+nac,NAC,Panchromatic Imagery,1,1.0,LROC NAC,"High-resolution panchromatic visible imagery (0.5 to 2.0 m/px)"
+dtm_3m,NAC,NAC Stereo DTM,1,3.0,NAC-stereo DTM,"High-resolution 3m stereo photogrammetric elevation model"
+slope_3m,NAC,NAC High-Res Slope,1,3.0,NAC-stereo DTM,"Meter-scale topographic slope derived from 3m stereo DTM"
+aspect_3m,NAC,NAC High-Res Aspect,2,3.0,NAC-stereo DTM,"Meter-scale slope aspect stored as sin/cos pair"

@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NASA-IBM Lunar Foundation Model Explorer</title>
   <link rel="stylesheet" href="style.css">
-  <!-- CoSE Overlay Theme Kit (ABAI kb/kits.md) -->
-  <link rel="stylesheet" href="assets/cose-theme.css">
 </head>
-<body data-site-id="lunar-lfm-explorer" class="theme-space">
+<body class="theme-space">
   <header class="app-header">
     <div class="header-container">
       <div class="branding">
         <div class="lunar-orb"></div>
         <div>
           <h1>NASA-IBM Lunar Foundation Model</h1>
-          <p class="subtitle">FAIR Multimodal Explorer &amp; Remote Sensing Diagnostics</p>
+          <p class="subtitle">FAIR Multimodal Explorer & Remote Sensing Diagnostics</p>
         </div>
       </div>
       <div class="header-badges">
@@ -25,13 +23,13 @@
       </div>
     </div>
 
-    <!-- Navigation Tabs (Touch-optimized >=44px, ABAI L027) -->
+    <!-- Navigation Tabs (Touch-optimized >=44px) -->
     <nav class="nav-tabs" role="tablist">
       <button class="nav-tab active" data-tab="tab-overview">Overview</button>
       <button class="nav-tab" data-tab="tab-modalities">11 Modalities</button>
       <button class="nav-tab" data-tab="tab-geometry">Solar Geometry</button>
-      <button class="nav-tab" data-tab="tab-architecture">ViT-B &amp; FlexiViT</button>
-      <button class="nav-tab" data-tab="tab-benchmarks">Benchmarks &amp; Disclosures</button>
+      <button class="nav-tab" data-tab="tab-architecture">ViT-B & FlexiViT</button>
+      <button class="nav-tab" data-tab="tab-benchmarks">Benchmarks & Disclosures</button>
       <button class="nav-tab" data-tab="tab-hub">Hugging Face Hub</button>
     </nav>
   </header>
@@ -56,25 +54,25 @@
         </div>
 
         <div class="card highlight-card">
-          <h2>Core Scientific Innovations</h2>
+          <h2>Core Innovations</h2>
           <div class="feature-item">
             <span class="feature-icon">☀️</span>
             <div>
               <h3>Acquisition Geometry as Explicit Context</h3>
-              <p>Lunar appearance is dominated by solar illumination angles rather than intrinsic surface variations. The model tokenizes incidence, emission, phase, and azimuth as sequence inputs, resolving the dominant illumination confound directly.</p>
+              <p>Lunar appearance is dominated by solar illumination angles rather than intrinsic surface color. The model tokenizes incidence, emission, phase, and azimuth as sequence inputs, handing the model the dominant confound directly.</p>
             </div>
           </div>
           <div class="feature-item">
             <span class="feature-icon">🔍</span>
             <div>
               <h3>Joint Mixed-Resolution Pretraining</h3>
-              <p>A single set of weights covers both regional WAC (~100 m/px) and meter-scale NAC (~1 m/px) in a single pretraining loop, bridging a 100× spatial scale gap.</p>
+              <p>A single set of weights covers both regional WAC (~100 m/px) and meter-scale NAC (~1 m/px) in a single batch loop, bridging a 100× spatial scale gap without separate models.</p>
             </div>
           </div>
           <div class="feature-item">
             <span class="feature-icon">🧩</span>
             <div>
-              <h3>FlexiViT &amp; Modality Decoupling</h3>
+              <h3>FlexiViT & Modality Decoupling</h3>
               <p>FlexiViT patch embedding lets you resize patch grids (e.g. ps8 for higher dense resolution) without backbone retraining; late-fusion tokenization allows dropping or adding modalities at fine-tuning time.</p>
             </div>
           </div>
@@ -125,12 +123,17 @@
           <h2>Dynamic Shadow Simulation</h2>
           <div class="shadow-canvas-container">
             <svg id="crater-svg" viewBox="0 0 300 300" width="100%" height="280">
+              <!-- Crater rim and surface rendering -->
               <defs>
                 <radialGradient id="crater-base" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stop-color="#1a1c22" />
                   <stop offset="70%" stop-color="#3b404d" />
                   <stop offset="100%" stop-color="#606775" />
                 </radialGradient>
+                <linearGradient id="shadow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#05070a" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#05070a" stop-opacity="0.0" />
+                </linearGradient>
               </defs>
               <rect width="300" height="300" fill="#242831" rx="8" />
               <!-- Crater Rim -->
@@ -140,7 +143,7 @@
               <!-- Central Peak -->
               <circle cx="150" cy="150" r="18" fill="#505766" stroke="#8c96a8" stroke-width="1.5" />
               <!-- Sunlight Vector Arrow -->
-              <line id="sun-vector" x1="150" y1="150" x2="80" y2="70" stroke="#f6c343" stroke-width="3" />
+              <line id="sun-vector" x1="150" y1="150" x2="80" y2="70" stroke="#f6c343" stroke-width="3" marker-end="url(#arrow)" />
             </svg>
           </div>
           <p class="caption text-center">Simulated 256×256 px crater tile with dynamic shadow casting vector</p>
@@ -155,7 +158,7 @@
           <h2>FlexiViT Patch Embedding Explorer</h2>
           <p>FlexiViT allows evaluating or fine-tuning the pretrained ViT-B backbone at different patch sizes without retraining weights.</p>
           <div class="control-group">
-            <label>Select Patch Size:</label>
+            <label for="patch-size-select">Select Patch Size:</label>
             <div class="btn-group" id="patch-buttons">
               <button class="btn btn-patch" data-patch="8">8 × 8 (ps8 - High Detail)</button>
               <button class="btn btn-patch active" data-patch="16">16 × 16 (ps16 - Pretrained)</button>
@@ -183,7 +186,7 @@
           <h2>Multimodal Token Late Fusion</h2>
           <p>Tokens are embedded per-modality and concatenated along the sequence dimension:</p>
           <div class="sequence-visualizer">
-            <div class="token-block token-vis">Dense Image Tokens (5 × 256 = 1,280 tokens)</div>
+            <div class="token-block token-vis">Dense Image Tokens (e.g. 5 × 256 = 1,280 tokens)</div>
             <div class="token-block token-opt">Optical Meta (8 tokens)</div>
             <div class="token-block token-ctx">Static Context (28 tokens)</div>
           </div>
@@ -197,12 +200,12 @@
     <!-- TAB 5: BENCHMARKS & DISCLOSURES -->
     <section id="tab-benchmarks" class="tab-pane">
       <div class="card">
-        <h2>SomBench Benchmark Performance (Ground Truth)</h2>
+        <h2>SomBench Benchmark Performance</h2>
         <div id="benchmarks-list" class="benchmark-grid"></div>
       </div>
 
       <div class="card mt-4">
-        <h2>Scientific &amp; Operational Disclosures (ABAI [[L001]], [[L006]])</h2>
+        <h2>Scientific & Operational Disclosures (ABAI [[L001]], [[L006]])</h2>
         <div id="disclosures-list" class="disclosure-grid"></div>
       </div>
     </section>
@@ -222,17 +225,9 @@
   </main>
 
   <footer class="app-footer">
-    <p>NASA-IBM Lunar Foundation Model Explorer · Grounded in Technical Report (Fraccaro et al., 2026) · Developed under FAIR &amp; ABAI Standards</p>
+    <p>NASA-IBM Lunar Foundation Model Explorer · Grounded in Technical Report (Fraccaro et al., 2026) · Developed under FAIR & ABAI Standards</p>
   </footer>
 
-  <!-- Visitor Analytics Beacon (ABAI kb/kits.md) -->
-  <script defer src="https://visitor-analytics.astrobotany.workers.dev/a.js"></script>
-
-  <!-- Local App Controller -->
   <script src="app.js"></script>
-
-  <!-- CoSE Theme & Site Navigation (ABAI kb/kits.md) -->
-  <script src="assets/theme.js"></script>
-  <script src="assets/sites.js"></script>
 </body>
 </html>
