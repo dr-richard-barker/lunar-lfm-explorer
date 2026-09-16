@@ -5,12 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NASA-IBM Lunar Foundation Model Explorer</title>
   <link rel="stylesheet" href="style.css">
-  <!-- CoSE Overlay Theme Kit (ABAI kb/kits.md) -->
-  <link rel="stylesheet" href="assets/cose-theme.css">
+  <!-- CoSE Overlay Theme Kit -->
+  <link rel="stylesheet" href="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-theme.css">
+  <link rel="stylesheet" href="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-chrome.css">
+  <link rel="stylesheet" href="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-map.css">
+  <style>
+  /* CoSE chrome layering */
+  .topbar.cose-dark, .topbar.cose-light { z-index: 10001 !important; }
+  .sitebar.cose-dark, .sitebar.cose-light { z-index: 10000 !important; }
+  .map-scrim { z-index: 9999 !important; }
+  @media (min-width: 600px) {
+    .header-container { padding-left: 115px; }
+  }
+  </style>
   <!-- Google model-viewer 3D component -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
-<body data-site-id="lunar-lfm-explorer" class="theme-space">
+<body data-site-id="lunar-lfm-explorer" data-cose-doc="off" data-brand-logo="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/cose-logo.png" class="theme-space">
   <header class="app-header">
     <div class="header-container">
       <div class="branding">
@@ -568,8 +579,9 @@
   <!-- Local App Controller -->
   <script src="app.js"></script>
 
-  <!-- CoSE Theme & Site Navigation (ABAI kb/kits.md) -->
-  <script src="assets/theme.js"></script>
-  <script src="assets/sites.js"></script>
+  <!-- CoSE Theme & Site Navigation -->
+  <script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/sites.js"></script>
+  <script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/theme.js"></script>
+  <script src="https://dr-richard-barker.github.io/Plant_response_to_radiation/cose/nav.js"></script>
 </body>
 </html>
