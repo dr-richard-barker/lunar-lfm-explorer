@@ -178,11 +178,12 @@ function initFlexiViTExplorer() {
       const gridDim = 256 / patch;
       const patchesPerMod = gridDim * gridDim;
       const totalDenseTokens = 5 * patchesPerMod; // Example 5 WAC dense modalities
-      const totalTokens = totalDenseTokens + 8 + 28; // + 8 optical + 28 static context
+      // Context sequences are text-tokenized (max 10 + 31 tokens per the released config),
+      // so only the exact dense count is shown.
 
       metricGrid.textContent = `${gridDim} × ${gridDim}`;
       metricPatches.textContent = patchesPerMod.toLocaleString();
-      metricSeq.textContent = totalTokens.toLocaleString();
+      metricSeq.textContent = totalDenseTokens.toLocaleString();
     });
   });
 }

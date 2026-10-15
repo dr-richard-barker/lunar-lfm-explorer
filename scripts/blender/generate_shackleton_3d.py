@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-Blender 5.2 Python script to procedurally construct a 3D physical model of Shackleton Crater
-and render multi-illumination polar observation tiles for the NASA-IBM Lunar Foundation Model.
+Blender 5.2 Python script to build a schematic 3D model of a Shackleton-like crater and render
+256 x 256 px tiles at a few illustrative lighting angles. The tiles are not LROC data and are
+not run through the NASA-IBM Lunar Foundation Model.
 
-Grounded Physical Geometry (LOLA / SLDEM2015):
-- Center: 89.9°S, 0.0°E
-- Rim Diameter: 21.0 km (Radius: 10.5 km)
-- Relief Depth: 4.2 km (Rim +1.2 km down to Floor -3.8 km)
-- Inner Wall Slope: 28° - 32°
-- Connecting Ridge: Elevated crest (+1.15 km) toward de Gerlache
+Schematic geometry: an analytic bowl with a smooth ridge. It is NOT derived from LOLA or
+SLDEM2015 data and has no geographic reference. Shackleton itself is centred at 89.67°S,
+129.78°E with a 20.92 km diameter (IAU Gazetteer, feature 5450).
+- Rim radius 10.5 km (21 km diameter), floor radius 3.5 km
+- Rim +1.2 km, floor -3.8 km: 5.0 km relief in the model (a modelling choice, not a measurement)
+- A smooth ridge (+1.15 km) added at 135° azimuth to suggest the Shackleton-de Gerlache ridge
 """
 
 import sys
@@ -53,7 +54,7 @@ def build_shackleton_mesh(grid_size=160, domain_km=30.0):
     R = np.sqrt(X**2 + Y**2)
     theta = np.arctan2(Y, X)
 
-    # Physical parameters (in km)
+    # Schematic geometry parameters (in km)
     R_floor = 3.5
     R_rim = 10.5
     Z_floor = -3.8
@@ -62,11 +63,11 @@ def build_shackleton_mesh(grid_size=160, domain_km=30.0):
 
     Z = np.zeros_like(R)
 
-    # 1. Crater Floor (Flat, 40 K permanent cold trap)
+    # 1. Crater floor (flat)
     floor_mask = R <= R_floor
     Z[floor_mask] = Z_floor
 
-    # 2. Crater Inner Walls (Steep 28°-32° slopes)
+    # 2. Crater inner walls (power-law profile)
     wall_mask = (R > R_floor) & (R <= R_rim)
     norm_wall = (R[wall_mask] - R_floor) / (R_rim - R_floor)
     Z[wall_mask] = Z_floor + (Z_rim - Z_floor) * (norm_wall ** 1.35)
@@ -76,7 +77,7 @@ def build_shackleton_mesh(grid_size=160, domain_km=30.0):
     decay = (R_rim / np.maximum(R[rim_mask], R_rim)) ** 2.2
     Z[rim_mask] = Z_background + (Z_rim - Z_background) * decay
 
-    # 4. Connecting Ridge (Elevated ridge toward de Gerlache, ~135° azimuth)
+    # 4. Schematic ridge at ~135° azimuth (suggests the Shackleton-de Gerlache ridge; not real terrain)
     ridge_angle = math.radians(135.0)
     # Perpendicular distance to ridge centerline
     d_ridge = np.abs(-np.sin(ridge_angle) * X + np.cos(ridge_angle) * Y)
@@ -88,7 +89,6 @@ def build_shackleton_mesh(grid_size=160, domain_km=30.0):
     Z[ridge_mask] += ridge_elevation[ridge_mask]
 
     # 5. Superimposed Micro-Cratering & Regolith Texture
-    np.random.seed(42)  # Deterministic seed for surface roughness (not scientific results)
     noise_fine = 0.04 * np.sin(X * 4.0) * np.cos(Y * 4.0) + 0.02 * np.sin(X * 12.0) * np.cos(Y * 12.0)
     Z += noise_fine
 
@@ -178,7 +178,7 @@ def set_sun_orientation(sun_obj, incidence_deg=85.0, azimuth_deg=120.0):
 
 
 def render_simulated_bundle(sun_obj, incidence_deg, azimuth_deg, filename):
-    """Render a 256x256 simulated LROC observation tile at given illumination angles."""
+    """Render a 256x256 tile of the schematic mesh at the given illumination angles (not LROC data)."""
     set_sun_orientation(sun_obj, incidence_deg=incidence_deg, azimuth_deg=azimuth_deg)
     
     scene = bpy.context.scene
@@ -232,7 +232,7 @@ def main():
         (70.0, 120.0, "shackleton_inc70_azim120.png"),  # Sub-polar comparison
     ]
 
-    print("\nRendering simulated multi-illumination LROC observation tiles...")
+    print("\nRendering illustrative multi-illumination tiles of the schematic mesh...")
     for inc, azim, fname in angles:
         render_simulated_bundle(sun_obj, inc, azim, fname)
 

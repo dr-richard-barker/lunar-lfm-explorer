@@ -21,7 +21,7 @@ SomBench divides tiles into two spatial resolution regimes. A single sample is e
 
 ## 2. The 9 Dense Imagery Modalities
 
-Each dense modality is a $256 \times 256$ raster image tile:
+SomBench tiles are $512 \times 512$ px (dataset card); the model's input size is $256 \times 256$ (model card). The dense modalities are:
 
 ### WAC Family (51.2 km footprint)
 1. `vis` (5 channels): Visible reflectance bands (415 nm, 566 nm, 604 nm, 643 nm, 689 nm) from LROC WAC.
@@ -31,7 +31,7 @@ Each dense modality is a $256 \times 256$ raster image tile:
 5. `aspect` (2 channels): Surface azimuth direction stored as $(\sin \theta, \cos \theta)$ pair to eliminate the 0°/360° angular wrap-around artifact.
 
 ### NAC Family (512 m footprint)
-6. `nac` (1 channel): High-resolution panchromatic visible imagery (0.5 to 2.0 m/px) from LROC NAC.
+6. `nac` (1 channel): High-resolution panchromatic imagery (1 m/px anchor) from LROC NAC.
 7. `dtm_3m` (1 channel): 3m meter-scale stereo photogrammetric elevation model.
 8. `slope_3m` (1 channel): Topographic slope at meter scale.
 9. `aspect_3m` (2 channels): High-resolution slope aspect stored as a $(\sin \theta, \cos \theta)$ pair.
@@ -41,20 +41,20 @@ Each dense modality is a $256 \times 256$ raster image tile:
 ## 3. Sequence Context Modalities
 
 ### Optical Acquisition Metadata (8 Scalar Fields)
-Passed as sequence tokens to capture the exact illumination geometry during exposure:
-- `solar_incidence`: Sun angle relative to local surface normal (dominates shadow length)
-- `emission_angle`: Spacecraft line-of-sight viewing angle
-- `phase_angle`: Angle between illumination source and viewer
-- `solar_azimuth`: Azimuth direction of illumination
-- `subsolar_lat` / `subsolar_lon`: Subsolar point coordinates
-- `center_lat` / `center_lon`: Tile center coordinates
+The model card lists: solar incidence, emission, phase and azimuth angles; sub-solar and
+tile-centre coordinates; and ground sampling distance. Values are binned and stringified before
+text tokenization (for example `C_LON=87.25-->87.50`); the released `backbone/config.yaml` allows
+at most 10 tokens for this sequence.
 
 ### Static-Map Context (28 Footprint Averages)
 Footprint-averaged physical measurements from prior lunar orbital missions:
-- **LRO Diviner (Thermophysics):** `TREG` (regolith temperature), `TBOL` (bolometric temperature), `ROCK_ABUND` (rock abundance fraction), `HPAR` (thermal skin depth), `DICE` (depth to ice stability).
-- **LRO LOLA (Altimetry & Roughness):** `ROUGHNESS` (kilometer-scale roughness), `PSR` (Permanently Shadowed Region coverage), `AVG_ILLUM` (annual average solar illumination), `ALBEDO` (normal albedo at 1064 nm).
-- **Mini-RF (Synthetic Aperture Radar):** `MINIRF_CPR` (Circular Polarization Ratio), `MINIRF_S1`, `MINIRF_DOP`.
-- **Kaguya / SELENE (Mineralogy):** `MI_MINERAL`, `SW_FE` (estimated FeO wt%), `SP_MINER`.
-- **LROC WAC (Composition):** `nr643`, `TIO2` (estimated TiO2 abundance), `WAC_MATURITY`.
-- **GRAIL (Gravity):** `GRAVITY` (Bouguer gravity anomaly).
-- **Lunar Prospector (Neutrons):** `HYDROGEN` (epithermal neutron flux).
+- **LRO Diviner:** `TREG` (nighttime regolith temperature anomaly), `TBOL` (bolometric temperature), `ROCK_ABUND` (rock abundance), `HPAR` (H-parameter: regolith density scale height), `DICE` (ice stability depth).
+- **LRO LOLA:** `ROUGHNESS` (roughness at 50 m baseline, 1 km product), `PSR` (permanently shadowed region mask), `AVG_ILLUM` (average illumination over the 18.6-yr precession cycle), `ALBEDO` (1064 nm normal albedo).
+- **Mini-RF:** `MINIRF_*` (circular polarization ratio; S-band reflectivity).
+- **Kaguya / SELENE:** `MI_*` (Multiband Imager reflectance and mineralogy), `SW_FE` (space-weathering Fe), `SP_MINER` (Spectral Profiler polar mineralogy).
+- **LROC WAC:** `nr643` (643 nm normalized reflectance), `TIO2` (TiO₂ abundance), `WAC_*` (other WAC products).
+- **GRAIL:** `GRAVITY` (free-air gravity disturbance).
+- **Lunar Prospector:** `HYDROGEN` (hydrogen abundance).
+
+Key names follow the model card; descriptions follow the SomBench dataset card. The released
+`backbone/config.yaml` allows at most 31 tokens for this sequence.

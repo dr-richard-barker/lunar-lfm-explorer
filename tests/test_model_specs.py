@@ -46,14 +46,14 @@ def test_sequence_length_fusion():
     """Verify sequence length arithmetic with multi-modal late fusion."""
     arch = ModelArchitecture()
     # 5 WAC dense modalities, 16x16 patch size: 5 * 256 = 1,280 tokens
-    # + 8 optical metadata sequence tokens
-    # + 28 static context sequence tokens
-    # Total = 1,280 + 8 + 28 = 1,316 tokens
+    # + up to 10 metadata tokens and up to 31 static-map tokens
+    #   (max_length values in the released backbone/config.yaml)
+    # Upper bound = 1,280 + 10 + 31 = 1,321 tokens
     seq = arch.compute_sequence_length(num_dense_modalities=5, patch_size=(16, 16))
     assert seq["dense_tokens"] == 1280
-    assert seq["optical_metadata_tokens"] == 8
-    assert seq["static_context_tokens"] == 28
-    assert seq["total_sequence_length"] == 1316
+    assert seq["optical_metadata_tokens"] == 10
+    assert seq["static_context_tokens"] == 31
+    assert seq["total_sequence_length"] == 1321
 
 
 def test_tokenizer_fsq_codebook():

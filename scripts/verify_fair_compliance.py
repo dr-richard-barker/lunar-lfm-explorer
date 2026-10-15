@@ -69,27 +69,30 @@ def check_doi_integrity() -> bool:
 
 
 def check_zero_synthetic_fallback() -> bool:
-    print("\n[3/6] Checking Zero-Synthetic Fallback Guarantee (ABAI L006)...")
-    # Inspect src/ code for random fallback patterns
-    src_dir = ROOT_DIR / "src"
+    print("\n[3/6] Checking for random-number generation in src/ and scripts/ (ABAI L006)...")
+    # Inspect src/ and scripts/ for random fallback patterns. An earlier version searched only
+    # src/, while hard-coded "results" lived in scripts/ (ABAI L008: a checker must look where
+    # the risk is). This check cannot detect hard-coded values; it only finds RNG calls.
     suspicious_patterns = [
         r"np\.random",
         r"numpy\.random",
         r"random\.random",
+        r"random\.uniform",
+        r"random\.gauss",
         r"simulate_lunar_data",
         r"fake_results",
     ]
     regexes = [re.compile(p) for p in suspicious_patterns]
     violations = []
 
-    for root, _, files in os.walk(src_dir):
-        for file in files:
-            if file.endswith(".py"):
-                filepath = Path(root) / file
-                content = filepath.read_text(encoding="utf-8")
-                for r in regexes:
-                    if r.search(content):
-                        violations.append((filepath.relative_to(ROOT_DIR), r.pattern))
+    py_files = [p for d in (ROOT_DIR / "src", ROOT_DIR / "scripts") for p in sorted(d.rglob("*.py"))]
+    for filepath in py_files:
+        if filepath.name == "verify_fair_compliance.py":
+            continue  # this file contains the patterns themselves
+        content = filepath.read_text(encoding="utf-8")
+        for r in regexes:
+            if r.search(content):
+                violations.append((filepath.relative_to(ROOT_DIR), r.pattern))
 
     if violations:
         print("  ✗ VIOLATION: Found synthetic random generation pattern in source code:")
@@ -97,7 +100,7 @@ def check_zero_synthetic_fallback() -> bool:
             print(f"     {v[0]}: pattern '{v[1]}'")
         return False
     else:
-        print("  ✓ No synthetic/random generation fallbacks in source code. All outputs are strictly grounded.")
+        print("  ✓ No random-number generation in src/ or scripts/. (Hard-coded values are not detected by this check.)")
         return True
 
 
@@ -168,8 +171,10 @@ def check_modalities_completeness() -> bool:
         print(f"  ✗ Expected 4 scientific disclosures, got {len(SCIENTIFIC_DISCLOSURES)}")
         return False
 
-    print("  ✓ 9 dense modalities, 8 optical fields, 28 static fields verified.")
-    print("  ✓ 5 SomBench benchmark records and 4 scientific disclosures verified.")
+    unverified = sum("UNVERIFIED" in f["desc"] for f in STATIC_CONTEXT_FIELDS)
+    print("  ✓ Counts match the model card: 9 dense modalities, 8 optical fields, 28 static fields.")
+    print(f"    ({unverified} of the 28 static-field keys are marked UNVERIFIED placeholders.)")
+    print("  ✓ 5 SomBench benchmark records and 4 disclosures present (values transcribed from the model card).")
     return True
 
 
@@ -189,7 +194,7 @@ def main() -> None:
 
     print("\n==================================================")
     if all(results):
-        print("  🎉 AUDIT RESULT: FULL COMPLIANCE (ALL 6 CHECKS PASSED)")
+        print("  🎉 ALL 6 CHECKS PASSED (each check's scope is stated above)")
         print("==================================================")
         sys.exit(0)
     else:

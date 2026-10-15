@@ -1,6 +1,6 @@
 """
-Unit tests for Blender 3D Shackleton Crater physical modeling and LFM test-run pipeline.
-Validates 3D glTF model size (ABAI L022), render resolution, and scientific metrics.
+Unit tests for the schematic Blender Shackleton model and its render inventory.
+Validates glTF model size (ABAI L022), render resolution, and that the inventory claims no model run.
 Standard library only (zero external dependencies).
 """
 
@@ -32,7 +32,7 @@ def test_shackleton_glb_asset():
 
 
 def test_blender_render_tiles():
-    """Verify rendered tiles are 256x256 px PNGs suitable for LFM ViT input."""
+    """Verify rendered tiles are 256x256 px PNGs (the model's input size)."""
     assets_dir = ROOT_DIR / "docs" / "assets" / "blender_renders"
     results_dir = ROOT_DIR / "results" / "blender_renders"
 
@@ -53,37 +53,49 @@ def test_blender_render_tiles():
             assert (width, height) == (256, 256), f"Tile {tile_name} has unexpected dimensions ({width}, {height})"
 
 
-def test_blender_lfm_test_run_schema():
-    """Verify schema and empirical metrics of results/blender_lfm_test_run.json."""
-    json_path = ROOT_DIR / "results" / "blender_lfm_test_run.json"
-    assert json_path.exists(), f"Missing test-run output: {json_path}"
+def test_blender_render_inventory():
+    """results/blender_render_inventory.json records tiles and grids, and claims no model run."""
+    json_path = ROOT_DIR / "results" / "blender_render_inventory.json"
+    assert json_path.exists(), f"Missing inventory: {json_path}"
 
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    assert "model_id" in data
-    assert "blender_mesh_specs" in data
-    assert data["blender_mesh_specs"]["crater_diameter_km"] == 21.0
-    assert data["blender_mesh_specs"]["relief_depth_km"] == 4.2
+    assert data["model_inference_run"] is False
+    assert len(data["tiles"]) == 5
+    for tile in data["tiles"]:
+        assert (tile["width_px"], tile["height_px"]) == (256, 256)
+    assert data["flexivit_patch_grids_256px"]["p16"]["patches_per_modality"] == 256
 
-    assert len(data["tiles_evaluated"]) == 5
-    for tile in data["tiles_evaluated"]:
-        assert len(tile["optical_vector"]) == 8
+    # No model-performance figures may appear in an inventory of renders.
+    text = json.dumps(data).lower()
+    for banned in ("disambiguation", "divergence", "gain", "qualified"):
+        assert banned not in text, f"Inventory contains model-performance wording: {banned}"
 
-    # FlexiViT tokenization specs
-    assert "flexivit_tokenization" in data
-    for p in ["p8", "p16", "p32"]:
-        assert p in data["flexivit_tokenization"]
 
-    # Shadow disambiguation stability gain
-    metrics = data["shadow_disambiguation_metrics"]
-    assert metrics["shadow_disambiguation_gain_pct"] > 30.0
-    assert metrics["lfm_sequence_conditioned_divergence_pct"] < 10.0
-    assert metrics["illumination_blind_baseline_divergence_pct"] > 35.0
+def test_mesh_specs_match_blender_script():
+    """The relief stated for the schematic mesh is the one the Blender script builds."""
+    import re
+    import sys
+    sys.path.insert(0, str(ROOT_DIR))
+    from scripts.inventory_blender_renders import MESH_SPECS
+
+    src = (ROOT_DIR / "scripts" / "blender" / "generate_shackleton_3d.py").read_text(encoding="utf-8")
+    def const(name):
+        m = re.search(rf"^\s*{name}\s*=\s*(-?[0-9.]+)", src, re.M)
+        assert m, f"{name} not found in generate_shackleton_3d.py"
+        return float(m.group(1))
+
+    assert const("R_rim") == MESH_SPECS["rim_radius_km"]
+    assert const("R_floor") == MESH_SPECS["floor_radius_km"]
+    assert const("Z_rim") == MESH_SPECS["rim_elevation_km"]
+    assert const("Z_floor") == MESH_SPECS["floor_elevation_km"]
+    assert abs((const("Z_rim") - const("Z_floor")) - MESH_SPECS["relief_km"]) < 1e-9
 
 
 if __name__ == "__main__":
     test_shackleton_glb_asset()
     test_blender_render_tiles()
-    test_blender_lfm_test_run_schema()
+    test_blender_render_inventory()
+    test_mesh_specs_match_blender_script()
     print("All Blender pipeline tests passed.")

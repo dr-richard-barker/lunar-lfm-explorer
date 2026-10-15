@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "description": "FAIR scientific exploration toolkit and interactive multi-device explorer for the NASA-IBM Lunar Foundation Model (ViT-B multimodal encoder-decoder trained on 2 million SomBench lunar tile bundles).",
   "license": "https://spdx.org/licenses/Apache-2.0",
-  "codeRepository": "https://github.com/dr-richard-barker/Lunar_analysis",
+  "codeRepository": "https://github.com/dr-richard-barker/lunar-lfm-explorer",
   "programmingLanguage": [
     "Python",
     "JavaScript",
@@ -29,7 +29,7 @@
       "@type": "Person",
       "givenName": "Richard",
       "familyName": "Barker",
-      "@id": "https://orcid.org/0000-0002-3908-4177"
+      "@id": "https://orcid.org/0000-0001-5681-9857"
     }
   ],
   "targetProduct": {

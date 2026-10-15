@@ -2,11 +2,15 @@
 NASA-IBM Lunar Foundation Model PyTorch Inference & Checkpoint Pipeline.
 
 Provides:
-- ViT-B (86M params) architecture matching the NASA-IBM Lunar Foundation Model
+- A simplified ViT-B re-implementation for architecture inspection. It is NOT the official
+  model: the released checkpoint is a TerraMind-style `lunarfm_base` model run through
+  TerraTorch (https://github.com/NASA-IMPACT/NASA-IBM-Lunar-Foundation-Model).
 - FlexiViT dynamic patch resizing adapter (p=8, 16, 32)
 - Multimodal sequence tokenization & late fusion with missing modality masking
-- Multi-task downstream prediction heads (hazard classification, slope, rock abundance)
-- Safe checkpoint loading with offline caching and ABAI L006 compliance
+- Downstream heads (hazard classification, slope, rock abundance) that are UNTRAINED: no
+  fine-tuned weights exist for them, so their outputs mean nothing.
+- Checkpoint loading that fails loudly (ABAI L006, L009): no checkpoint, or a checkpoint whose
+  tensors match nothing in this module, raises instead of returning random weights.
 """
 
 from __future__ import annotations
@@ -361,17 +365,20 @@ def load_pretrained_lfm(
     patch_size: int = 16,
     device: str = "cpu",
     offline_only: bool = False,
+    allow_random_init: bool = False,
 ) -> Union[LunarDownstreamPredictor, Dict[str, Any]]:
     """
-    Load NASA-IBM Lunar Foundation Model weights into predictor.
-    
-    Adheres strictly to ABAI L006: will never generate random numbers as mock weights.
-    If weights are not present, reports clear diagnostic and instructions.
-    """
-    checkpoint_dir = Path(DEFAULT_CACHE_DIR) / "checkpoints"
-    checkpoint_dir.mkdir(parents=True, exist_ok=True)
-    default_ckpt = checkpoint_dir / "lunar_vit_b.pt"
+    Load NASA-IBM Lunar Foundation Model weights into the simplified predictor.
 
+    ABAI L006: never returns random weights silently. If no checkpoint is found this raises
+    FileNotFoundError, unless allow_random_init=True is passed explicitly (for architecture tests).
+    ABAI L009: if the checkpoint loads but none of its tensors match this module, it raises
+    RuntimeError rather than returning an effectively untrained network.
+
+    The default path is where LunarHubClient().download_checkpoint() saves the backbone.
+    `offline_only` is kept for compatibility; a missing checkpoint now always raises.
+    """
+    default_ckpt = Path(DEFAULT_CACHE_DIR) / "weights" / "backbone" / "checkpoint.pt"
     target_path = Path(checkpoint_path) if checkpoint_path else default_ckpt
 
     if not TORCH_AVAILABLE:
@@ -388,21 +395,33 @@ def load_pretrained_lfm(
     if target_path.exists():
         logger.info("Loading pretrained weights from %s", target_path)
         state_dict = torch.load(target_path, map_location=device)
-        predictor.load_state_dict(state_dict, strict=False)
-        predictor.to(device)
-        predictor.eval()
-        return predictor
-    elif offline_only:
-        raise FileNotFoundError(
-            f"Pretrained checkpoint not found at {target_path}. "
-            "ABAI L006 Guarantee: Silent synthetic weight generation is strictly prohibited."
-        )
-    else:
+        if isinstance(state_dict, dict) and "model" in state_dict and isinstance(state_dict["model"], dict):
+            state_dict = state_dict["model"]
+        result = predictor.load_state_dict(state_dict, strict=False)
+        own_keys = set(predictor.state_dict().keys())
+        loaded = own_keys - set(result.missing_keys)
+        if not loaded:
+            raise RuntimeError(
+                f"No tensor in {target_path} matches this simplified architecture "
+                f"({len(result.unexpected_keys)} unexpected keys). The official checkpoint is a "
+                "TerraMind-style model; use TerraTorch for real inference."
+            )
         logger.warning(
-            "Checkpoint %s not found. Initialized architectural backbone with default weights. "
-            "To download official weights: python3 scripts/fetch_sample_metadata.py",
-            target_path
+            "Loaded %d of %d tensors from %s; %d are missing and keep their random initialisation.",
+            len(loaded), len(own_keys), target_path, len(result.missing_keys),
         )
         predictor.to(device)
         predictor.eval()
         return predictor
+
+    if allow_random_init and not offline_only:
+        logger.warning("No checkpoint at %s: returning a RANDOMLY INITIALISED network (explicitly requested).", target_path)
+        predictor.to(device)
+        predictor.eval()
+        return predictor
+
+    raise FileNotFoundError(
+        f"Pretrained checkpoint not found at {target_path}. Download the backbone with "
+        "LunarHubClient().download_checkpoint() (needs huggingface_hub), or pass checkpoint_path. "
+        "ABAI L006: random weights are never returned unless allow_random_init=True."
+    )

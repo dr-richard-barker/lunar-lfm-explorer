@@ -4,7 +4,7 @@ title: "lunar-lfm-explorer: FAIR Exploration Toolkit for the NASA-IBM Lunar Foun
 abstract: "A FAIR-compliant scientific toolkit and interactive explorer for the NASA-IBM Lunar Foundation Model (ViT-B multimodal remote sensing encoder-decoder trained on SomBench's 2 million lunar tile bundles across 11 modalities and 2 scale families)."
 type: software
 license: Apache-2.0
-repository-code: "https://github.com/dr-richard-barker/Lunar_analysis"
+repository-code: "https://github.com/dr-richard-barker/lunar-lfm-explorer"
 keywords:
   - "lunar remote sensing"
   - "foundation model"
@@ -19,7 +19,7 @@ keywords:
 authors:
   - family-names: "Barker"
     given-names: "Richard"
-    orcid: "https://orcid.org/0000-0002-3908-4177"
+    orcid: "https://orcid.org/0000-0001-5681-9857"
 
 references:
   - type: article
@@ -87,6 +87,36 @@ references:
         given-names: "Daniela"
       - family-names: "Fraccaro"
         given-names: "Paolo"
+      - family-names: "Dionelis"
+        given-names: "Nikolaos"
+      - family-names: "Barker"
+        given-names: "Michael K."
+      - family-names: "Annex"
+        given-names: "Andrew"
+      - family-names: "Viswanathan"
+        given-names: "Vishnu"
+      - family-names: "Morse"
+        given-names: "Zachary"
+      - family-names: "Schaefer"
+        given-names: "Ethan I."
+      - family-names: "Debary"
+        given-names: "Hiyam"
+      - family-names: "Kumar"
+        given-names: "Ankur"
+      - family-names: "Lal"
+        given-names: "Rohit"
+      - family-names: "Dawson"
+        given-names: "Geoffrey"
+      - family-names: "Watson"
+        given-names: "Campbell"
+      - family-names: "Dawson-Rigas"
+        given-names: "Rebekah I."
+      - family-names: "Maskey"
+        given-names: "Manil"
+      - family-names: "Bernabé-Moreno"
+        given-names: "Juan"
+      - family-names: "Ramachandran"
+        given-names: "Rahul"
       - family-names: "Roy"
         given-names: "Sujit"
     year: 2026

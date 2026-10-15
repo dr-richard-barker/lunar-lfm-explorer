@@ -13,7 +13,7 @@ from lunar_lfm.inference import (
 
 def test_load_pretrained_lfm_contract():
     """Verify load_pretrained_lfm returns a valid predictor or diagnostic structure."""
-    res = load_pretrained_lfm(patch_size=16)
+    res = load_pretrained_lfm(patch_size=16, allow_random_init=True)
     if not TORCH_AVAILABLE:
         assert res["status"] == "torch_not_installed"
         assert "PyTorch is not installed" in res["message"]
@@ -36,6 +36,16 @@ def test_flexivit_patch_adaptation_dimensions():
     assert backbone.patch_size == 16
 
 
+def test_missing_checkpoint_raises_by_default():
+    """ABAI L006: without allow_random_init, a missing checkpoint raises rather than returning random weights."""
+    if TORCH_AVAILABLE:
+        try:
+            load_pretrained_lfm(checkpoint_path="/nonexistent/lunar_weights.pt")
+            assert False, "Should have raised FileNotFoundError"
+        except FileNotFoundError:
+            pass
+
+
 def test_offline_mode_abai_l006_compliance():
     """Verify offline_only mode raises FileNotFoundError instead of generating synthetic weights."""
     if TORCH_AVAILABLE:
@@ -52,5 +62,6 @@ def test_offline_mode_abai_l006_compliance():
 if __name__ == "__main__":
     test_load_pretrained_lfm_contract()
     test_flexivit_patch_adaptation_dimensions()
+    test_missing_checkpoint_raises_by_default()
     test_offline_mode_abai_l006_compliance()
     print("All inference tests passed.")

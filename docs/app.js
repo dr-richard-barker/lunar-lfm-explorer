@@ -18,9 +18,7 @@ const STATIC_FALLBACK_DATA = {
       total_modalities: 11,
       pretrain_steps: 150000,
       pretrain_hardware: "16 x NVIDIA H100",
-      sombench_bundles: 1963722,
-      approx_params_m: 178.96,
-      approx_weight_gb: 0.33
+      sombench_bundles: 1963722
     }
   },
   modalities: {
@@ -38,8 +36,8 @@ const STATIC_FALLBACK_DATA = {
   },
   benchmarks: {
     benchmarks: [
-      { id: "robbins_craters_50", name: "Robbins Craters (50% Data)", target: "Impact craters on LROC WAC (~100 m/px)", scale: "WAC", metric: "mAP", direction: "maximize", lfm_score: "0.2541 ± 0.0018", lfm_config: "Full Fine-Tuning", baseline_score: "0.2313 ± 0.0027", baseline_name: "SwinV2-B (ImageNet-22k)", random_init: "0.2197 ± 0.0027", takeaway: "High label efficiency: LFM with 50% data matches or exceeds SwinV2-B on 100% data." },
-      { id: "robbins_craters_100", name: "Robbins Craters (100% Data)", target: "Impact craters on LROC WAC (~100 m/px)", scale: "WAC", metric: "mAP", direction: "maximize", lfm_score: "0.2581 ± 0.0017", lfm_config: "LoRA (rank 16, α=32)", baseline_score: "0.2420 ± 0.0047", baseline_name: "SwinV2-B (ImageNet-22k)", random_init: "0.2289 ± 0.0037", takeaway: "LoRA fine-tuning outperforms full fine-tuning with narrower seed spread." },
+      { id: "robbins_craters_50", name: "Robbins Craters (50% Data)", target: "Impact craters on LROC WAC (~100 m/px)", scale: "WAC", metric: "mAP", direction: "maximize", lfm_score: "0.2541 ± 0.0018", lfm_config: "Full Fine-Tuning", baseline_score: "0.2313 ± 0.0027", baseline_name: "SwinV2-B", random_init: "0.2197 ± 0.0027", takeaway: "High label efficiency: LFM with 50% data matches or exceeds SwinV2-B on 100% data." },
+      { id: "robbins_craters_100", name: "Robbins Craters (100% Data)", target: "Impact craters on LROC WAC (~100 m/px)", scale: "WAC", metric: "mAP", direction: "maximize", lfm_score: "0.2581 ± 0.0017", lfm_config: "LoRA (rank 16, α=32)", baseline_score: "0.2420 ± 0.0047", baseline_name: "SwinV2-B", random_init: "0.2289 ± 0.0037", takeaway: "LoRA fine-tuning outperforms full fine-tuning with narrower seed spread." },
       { id: "nac_craters_meter_scale", name: "NAC Craters (Meter Scale)", target: "Small impact craters on LROC NAC (1 m/px)", scale: "NAC", metric: "mAP", direction: "maximize", lfm_score: "0.1543 ± 0.0098", lfm_config: "LoRA (rank 16, α=32)", baseline_score: "0.1552 ± 0.0086", baseline_name: "SwinV2-B", random_init: "0.1274 ± 0.0151", takeaway: "Leaders are comparable within seed spread; frozen encoder fails at meter scale." },
       { id: "irregular_mare_patches", name: "Irregular Mare Patches (IMP)", target: "Young volcanic surface features / enigmatic mounds", scale: "NAC/WAC", metric: "IoU₁", direction: "maximize", lfm_score: "0.5709 ± 0.0114", lfm_config: "Frozen Encoder", baseline_score: "0.5687 ± 0.0181", baseline_name: "ConvNeXtV2-B", random_init: "0.3142 ± 0.0746", takeaway: "Pretraining is essential: random-init collapses to 0.3142. Frozen encoder yields strongest generalization." },
       { id: "polar_ice_prospectivity", name: "Polar Ice Prospectivity", target: "Permanently Shadowed Regions (PSRs) ice stability", scale: "WAC/Context", metric: "RMSE", direction: "minimize", lfm_score: "0.0293 ± 0.0013", lfm_config: "Full Fine-Tuning", baseline_score: "0.0377 ± 0.0004", baseline_name: "SwinV2-B", random_init: "0.0397 ± 0.0004", takeaway: "Widest margin: 22% RMSE reduction. 3-modality LFM matches full-stack ConvNeXt-B." }
@@ -53,8 +51,9 @@ const STATIC_FALLBACK_DATA = {
   },
   hub: {
     id: "nasa-ibm-ai4science/NASA-IBM-Lunar-Foundation-Model",
-    downloads: 1948,
-    likes: 35,
+    _snapshot: "2026-10-15",
+    downloads: 2431,
+    likes: 54,
     usedStorage: 12789820545,
     siblings: [
       { rfilename: "README.md" },
@@ -74,87 +73,15 @@ const STATIC_FALLBACK_DATA = {
     ]
   },
   shackleton: {
-    specs: {
-      name: "Shackleton Crater",
-      coords: "89.9°S, 0.0°E",
-      diameter_km: 21.0,
-      depth_km: 4.2,
-      floor_temp_k: 40.0
-    },
+    // IAU Gazetteer of Planetary Nomenclature, feature 5450
+    crater: { name: "Shackleton", coords: "89.67°S, 129.78°E", diameter_km: 20.92 },
+    // NASA Artemis III candidate regions: 13 named 19 Aug 2022; 9 in the 28 Oct 2024 update
     zones: [
-      {
-        id: "CR-1",
-        name: "Connecting Ridge (Primary Artemis Site)",
-        coords: "89.54°S, 116.50°E",
-        elev: 1150,
-        slope_safe: 78.4,
-        slope_marginal: 16.2,
-        slope_hazard: 5.4,
-        illum_mean: 86.8,
-        illum_max: 92.4,
-        dte_vis: 96.2,
-        psr_dist_km: 1.2,
-        rock_frac: 0.038,
-        safety_score: 9.1,
-        quickmap: "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
-        svg_pos: { cx: 120, cy: 70 },
-        desc: "High-altitude ridge connecting Shackleton to de Gerlache. Offers near-continuous solar illumination (86.8%) and 96% direct Earth visibility with easy rover ingress to the crater rim."
-      },
-      {
-        id: "PNS-1",
-        name: "Peak Near Shackleton",
-        coords: "89.74°S, 121.23°E",
-        elev: 1320,
-        slope_safe: 65.1,
-        slope_marginal: 24.3,
-        slope_hazard: 10.6,
-        illum_mean: 84.5,
-        illum_max: 88.6,
-        dte_vis: 92.4,
-        psr_dist_km: 2.8,
-        rock_frac: 0.052,
-        safety_score: 8.3,
-        quickmap: "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
-        svg_pos: { cx: 135, cy: 50 },
-        desc: "Elevated peak with strong summer sunlight (84.5%), but narrower touchdown benches bounded by steeper approach shoulders."
-      },
-      {
-        id: "CRE-1",
-        name: "Connecting Ridge Extension",
-        coords: "89.30°S, 128.50°E",
-        elev: 940,
-        slope_safe: 82.3,
-        slope_marginal: 13.9,
-        slope_hazard: 3.8,
-        illum_mean: 78.6,
-        illum_max: 83.2,
-        dte_vis: 89.8,
-        psr_dist_km: 6.4,
-        rock_frac: 0.029,
-        safety_score: 8.7,
-        quickmap: "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
-        svg_pos: { cx: 90, cy: 45 },
-        desc: "Broad plateau with exceptional touchdown safety margin for large lunar landers, though further from the cold-trap rim (6.4 km)."
-      },
-      {
-        id: "SR-1",
-        name: "Shackleton Rim Crest",
-        coords: "89.88°S, 0.00°E",
-        elev: 1280,
-        slope_safe: 48.0,
-        slope_marginal: 31.0,
-        slope_hazard: 21.0,
-        illum_mean: 82.1,
-        illum_max: 89.0,
-        dte_vis: 91.0,
-        psr_dist_km: 0.3,
-        rock_frac: 0.068,
-        safety_score: 7.2,
-        quickmap: "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10",
-        svg_pos: { cx: 160, cy: 30 },
-        desc: "Overlooks the 4.2 km vertical crater abyss. Ideal staging station for tethered winch deployment into the 40 K ice trap, but higher terrain hazard."
-      }
-    ]
+      { id: "CR", name: "Connecting Ridge", nasa2022: true, nasa2024: false },
+      { id: "PNS", name: "Peak Near Shackleton", nasa2022: true, nasa2024: false },
+      { id: "CRE", name: "Connecting Ridge Extension", nasa2022: true, nasa2024: false }
+    ],
+    quickmap: "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10"
   }
 };
 
@@ -339,11 +266,10 @@ function initFlexiViTExplorer() {
       const gridDim = 256 / patch;
       const patchesPerMod = gridDim * gridDim;
       const totalDenseTokens = 5 * patchesPerMod;
-      const totalTokens = totalDenseTokens + 8 + 28;
 
       metricGrid.textContent = `${gridDim} × ${gridDim}`;
       metricPatches.textContent = patchesPerMod.toLocaleString();
-      metricSeq.textContent = totalTokens.toLocaleString();
+      metricSeq.textContent = totalDenseTokens.toLocaleString();
     });
   });
 }
@@ -411,14 +337,27 @@ async function initHubProbe() {
 
   async function loadHubStatus() {
     container.innerHTML = `<p class="text-muted">Querying Hugging Face API...</p>`;
-    let data = STATIC_FALLBACK_DATA.hub;
+    let data = null;
+    let sourceLabel = "";
     try {
       const res = await fetch("/api/hub-status");
       if (res.ok) {
         data = await res.json();
+        sourceLabel = "live (local dashboard API)";
       }
-    } catch (err) {
-      // Graceful fallback to verified static repository record
+    } catch (err) { /* not running the local dashboard */ }
+    if (!data) {
+      try {
+        const res = await fetch(`https://huggingface.co/api/models/${STATIC_FALLBACK_DATA.hub.id}`);
+        if (res.ok) {
+          data = await res.json();
+          sourceLabel = "live from the Hugging Face API";
+        }
+      } catch (err) { /* offline */ }
+    }
+    if (!data) {
+      data = STATIC_FALLBACK_DATA.hub;
+      sourceLabel = `offline snapshot from ${data._snapshot}, not live`;
     }
 
     const files = data.siblings || [];
@@ -446,6 +385,7 @@ async function initHubProbe() {
           <span class="metric-lbl">Total Checkpoints Size</span>
         </div>
       </div>
+      <p class="text-muted text-sm">Source: ${sourceLabel}</p>
       <h3>Registered Repository Sibling Files</h3>
       <ul class="file-list mt-4">${fileListHtml}</ul>
     `;
@@ -455,194 +395,38 @@ async function initHubProbe() {
   loadHubStatus();
 }
 
-/* Artemis IV & Shackleton Crater Explorer */
+/* Shackleton candidate regions (sourced facts only; no slope, sunlight or safety numbers) */
 function initShackletonExplorer() {
   const zoneButtons = document.querySelectorAll(".btn-zone");
   const detailsBox = document.getElementById("shackleton-details");
-  const quickmapBtn = document.getElementById("shackleton-quickmap-btn");
-  const sliderSlope = document.getElementById("slider-slope-thresh");
-  const valSlope = document.getElementById("val-slope-thresh");
-  const sliderRock = document.getElementById("slider-rock-thresh");
-  const valRock = document.getElementById("val-rock-thresh");
-
-  const metricSafe = document.getElementById("metric-safe-pct");
-  const metricPower = document.getElementById("metric-power-score");
-  const metricPsr = document.getElementById("metric-psr-access");
-
-  const svgSite = document.getElementById("svg-landing-site");
-  const svgLabel = document.getElementById("svg-site-label");
-  const svgRoverLine = document.getElementById("svg-rover-line");
-
-  const tableBody = document.getElementById("shackleton-table-body");
-  const tableSearch = document.getElementById("shackleton-table-search");
-  const sortHeaders = document.querySelectorAll("#shackleton-pipeline-table th.sortable");
-
   if (!zoneButtons.length || !detailsBox) return;
 
   const data = STATIC_FALLBACK_DATA.shackleton;
-  let activeZone = data.zones[0];
-  let currentSort = { col: "safety_score", asc: false };
-  let currentFilter = "";
 
-  function renderTable() {
-    if (!tableBody) return;
-    let zones = [...data.zones];
-
-    if (currentFilter.trim()) {
-      const q = currentFilter.toLowerCase();
-      zones = zones.filter(
-        (z) =>
-          z.id.toLowerCase().includes(q) ||
-          z.name.toLowerCase().includes(q) ||
-          z.coords.toLowerCase().includes(q)
-      );
-    }
-
-    zones.sort((a, b) => {
-      let va = a[currentSort.col];
-      let vb = b[currentSort.col];
-      if (typeof va === "string") {
-        return currentSort.asc ? va.localeCompare(vb) : vb.localeCompare(va);
-      }
-      return currentSort.asc ? va - vb : vb - va;
-    });
-
-    tableBody.innerHTML = "";
-    zones.forEach((z) => {
-      const tr = document.createElement("tr");
-      if (activeZone && activeZone.id === z.id) {
-        tr.classList.add("active-row");
-      }
-      tr.innerHTML = `
-        <td><strong>${z.id}</strong></td>
-        <td><strong>${z.name}</strong></td>
-        <td>+${z.elev} m</td>
-        <td><span style="color: #22c55e; font-weight: bold;">${z.slope_safe}%</span></td>
-        <td>${z.illum_mean}%</td>
-        <td>${z.dte_vis}%</td>
-        <td>${z.psr_dist_km} km</td>
-        <td>${z.rock_frac}</td>
-        <td><strong style="color: #fbbf24;">${z.safety_score}</strong></td>
-        <td>
-          <a href="${z.quickmap}" target="_blank" rel="noopener" class="btn btn-sm btn-quickmap" onclick="event.stopPropagation()">
-            QuickMap ↗
-          </a>
-        </td>
-      `;
-
-      tr.addEventListener("click", () => {
-        zoneButtons.forEach((b) => {
-          if (b.getAttribute("data-zone") === z.id) b.classList.add("active");
-          else b.classList.remove("active");
-        });
-        renderZone(z, false);
-      });
-
-      tableBody.appendChild(tr);
-    });
-  }
-
-  function renderZone(zone, refreshTable = true) {
-    activeZone = zone;
+  function renderZone(zone) {
     detailsBox.innerHTML = `
       <h3 style="color: var(--color-accent, #58a6ff);">${zone.name}</h3>
-      <p class="text-muted" style="margin-bottom: 8px;">${zone.desc}</p>
       <table class="spec-table" style="font-size: 0.9em;">
-        <tr><td><strong>Coordinates:</strong></td><td>${zone.coords}</td></tr>
-        <tr><td><strong>Elevation:</strong></td><td>+${zone.elev} m (above 1737.4 km reference)</td></tr>
-        <tr><td><strong>Safe Slope (&lt;10°):</strong></td><td><strong style="color: #22c55e;">${zone.slope_safe}%</strong></td></tr>
-        <tr><td><strong>Annual Sunlight:</strong></td><td><strong>${zone.illum_mean}%</strong> (Peak Summer: ${zone.illum_max}%)</td></tr>
-        <tr><td><strong>Direct-to-Earth LOS:</strong></td><td><strong>${zone.dte_vis}%</strong> line-of-sight visibility</td></tr>
-        <tr><td><strong>Distance to PSR Floor:</strong></td><td><strong>${zone.psr_dist_km} km</strong> to 40 K permanent cold trap</td></tr>
-        <tr><td><strong>Diviner Rock Abundance:</strong></td><td>${zone.rock_frac} fraction</td></tr>
-        <tr><td><strong>Operational Safety Rating:</strong></td><td><strong style="color: #fbbf24;">${zone.safety_score} / 10</strong></td></tr>
+        <tr><td><strong>NASA Artemis III candidate, Aug 2022 (13 regions):</strong></td><td>${zone.nasa2022 ? "yes" : "no"}</td></tr>
+        <tr><td><strong>NASA Artemis III candidate, Oct 2024 (9 regions):</strong></td><td>${zone.nasa2024 ? "yes" : "no"}</td></tr>
+        <tr><td><strong>Nearby crater:</strong></td><td>${data.crater.name}, centre ${data.crater.coords}, ${data.crater.diameter_km} km (IAU)</td></tr>
       </table>
     `;
-
-    if (quickmapBtn) {
-      quickmapBtn.href = zone.quickmap;
-    }
-
-    if (svgSite && zone.svg_pos) {
-      svgSite.setAttribute("cx", zone.svg_pos.cx);
-      svgSite.setAttribute("cy", zone.svg_pos.cy);
-      if (svgLabel) {
-        svgLabel.setAttribute("x", zone.svg_pos.cx);
-        svgLabel.setAttribute("y", zone.svg_pos.cy - 14);
-        svgLabel.textContent = `${zone.id} (${zone.name.split(" ")[0]})`;
-      }
-      if (svgRoverLine) {
-        svgRoverLine.setAttribute("x1", zone.svg_pos.cx);
-        svgRoverLine.setAttribute("y1", zone.svg_pos.cy);
-      }
-    }
-
-    updateMetrics();
-    if (refreshTable) renderTable();
-  }
-
-  function updateMetrics() {
-    if (!activeZone) return;
-    const slopeThresh = parseFloat(sliderSlope?.value || "10.0");
-    const rockThresh = parseFloat(sliderRock?.value || "0.05");
-
-    if (valSlope) valSlope.textContent = `${slopeThresh.toFixed(1)}°`;
-    if (valRock) valRock.textContent = rockThresh.toFixed(2);
-
-    let adjustedSafe = activeZone.slope_safe;
-    if (slopeThresh < 10.0) {
-      adjustedSafe = activeZone.slope_safe * (slopeThresh / 10.0);
-    } else if (slopeThresh > 10.0) {
-      const extraMargin = activeZone.slope_marginal * ((slopeThresh - 10.0) / 5.0);
-      adjustedSafe = Math.min(99.0, activeZone.slope_safe + extraMargin);
-    }
-
-    if (rockThresh < activeZone.rock_frac) {
-      adjustedSafe *= (rockThresh / activeZone.rock_frac);
-    }
-
-    if (metricSafe) metricSafe.textContent = `${adjustedSafe.toFixed(1)}%`;
-    if (metricPower) metricPower.textContent = `${activeZone.illum_mean}%`;
-    if (metricPsr) metricPsr.textContent = `${activeZone.psr_dist_km} km`;
   }
 
   zoneButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       zoneButtons.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
-      const zoneId = btn.getAttribute("data-zone");
-      const zone = data.zones.find((z) => z.id === zoneId);
+      const zone = data.zones.find((z) => z.id === btn.getAttribute("data-zone"));
       if (zone) renderZone(zone);
     });
   });
 
-  sortHeaders.forEach((th) => {
-    th.addEventListener("click", () => {
-      const col = th.getAttribute("data-sort");
-      if (currentSort.col === col) {
-        currentSort.asc = !currentSort.asc;
-      } else {
-        currentSort.col = col;
-        currentSort.asc = true;
-      }
-      sortHeaders.forEach((h) => (h.textContent = h.textContent.replace(/[▲▼]/g, "⬍")));
-      th.textContent = th.textContent.replace("⬍", currentSort.asc ? "▲" : "▼");
-      renderTable();
-    });
-  });
-
-  tableSearch?.addEventListener("input", (e) => {
-    currentFilter = e.target.value;
-    renderTable();
-  });
-
-  sliderSlope?.addEventListener("input", updateMetrics);
-  sliderRock?.addEventListener("input", updateMetrics);
-
   renderZone(data.zones[0]);
 }
 
-/* 3D Blender Model & Multi-Angle Shadow Simulation Viewer */
+/* Schematic 3D crater model and rendered tiles */
 function initBlenderViewer() {
   const toggleButtons = document.querySelectorAll("#blender-view-toggle .btn-blender-tab");
   const panes = document.querySelectorAll(".blender-view-pane");
@@ -650,9 +434,6 @@ function initBlenderViewer() {
   const tileImg = document.getElementById("tile-preview-img");
   const tileTitle = document.getElementById("tile-info-title");
   const tileDesc = document.getElementById("tile-info-desc");
-  const metricGain = document.getElementById("tile-metric-gain");
-  const metricDiv = document.getElementById("tile-metric-divergence");
-  const metricBase = document.getElementById("tile-metric-baseline");
 
   if (!toggleButtons.length && !tileButtons.length) return;
 
@@ -675,15 +456,6 @@ function initBlenderViewer() {
     });
   });
 
-  // Empirical test run metrics from results/blender_lfm_test_run.json
-  const tileMetrics = {
-    "shackleton_inc85_azim000.png": { gain: "+38.7%", div: "4.1%", base: "42.8%" },
-    "shackleton_inc85_azim090.png": { gain: "+36.2%", div: "4.8%", base: "41.0%" },
-    "shackleton_inc85_azim180.png": { gain: "+41.1%", div: "3.9%", base: "45.0%" },
-    "shackleton_inc85_azim270.png": { gain: "+37.5%", div: "4.4%", base: "41.9%" },
-    "shackleton_inc70_azim120.png": { gain: "+29.4%", div: "3.2%", base: "32.6%" }
-  };
-
   tileButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       tileButtons.forEach((b) => b.classList.remove("active"));
@@ -695,20 +467,15 @@ function initBlenderViewer() {
 
       if (tileImg && tileFile) {
         tileImg.src = `assets/blender_renders/${tileFile}`;
-        tileImg.alt = title || "Simulated LROC observation tile rendered with Blender 5.2";
+        tileImg.alt = `Rendered tile of the schematic crater: ${title || ""}`;
       }
       if (tileTitle && title) tileTitle.textContent = title;
       if (tileDesc && desc) tileDesc.textContent = desc;
-
-      const m = tileMetrics[tileFile] || { gain: "+38.7%", div: "4.1%", base: "42.8%" };
-      if (metricGain) metricGain.textContent = m.gain;
-      if (metricDiv) metricDiv.textContent = m.div;
-      if (metricBase) metricBase.textContent = m.base;
     });
   });
 }
 
-/* 3D Multi-Angle Solar Lab Controller */
+/* 3D Lighting Lab controller (schematic models; lighting parameters only) */
 function init3DSolarLab() {
   const angleButtons = document.querySelectorAll("#lab-3d-angle-buttons .btn-lab-angle");
   const modelViewer = document.getElementById("lab-3d-model-viewer");
@@ -719,13 +486,7 @@ function init3DSolarLab() {
   const telInc = document.getElementById("lab-tel-inc");
   const telAzim = document.getElementById("lab-tel-azim");
   const telElev = document.getElementById("lab-tel-elev");
-  const telLit = document.getElementById("lab-tel-lit");
-  const telShadow = document.getElementById("lab-tel-shadow");
-  const telGain = document.getElementById("lab-tel-gain");
-
-  const opticalVector = document.getElementById("lab-optical-vector");
   const tileImg = document.getElementById("lab-tile-preview-img");
-  const divBadge = document.getElementById("lab-divergence-badge");
 
   const camButtons = document.querySelectorAll(".btn-cam-preset");
 
@@ -743,12 +504,6 @@ function init3DSolarLab() {
       const azim = btn.getAttribute("data-azim");
       const elev = btn.getAttribute("data-elev");
       const regime = btn.getAttribute("data-regime");
-      const lit = btn.getAttribute("data-lit");
-      const shadow = btn.getAttribute("data-shadow");
-      const gain = btn.getAttribute("data-gain");
-      const div = btn.getAttribute("data-div");
-      const base = btn.getAttribute("data-base");
-      const vector = btn.getAttribute("data-vector");
       const desc = btn.getAttribute("data-desc");
 
       // Switch 3D GLB model
@@ -768,22 +523,11 @@ function init3DSolarLab() {
       if (telInc) telInc.textContent = inc === "None" ? "—" : `${parseFloat(inc).toFixed(1)}°`;
       if (telAzim) telAzim.textContent = azim === "None" ? "—" : `${parseFloat(azim).toFixed(1)}°`;
       if (telElev) telElev.textContent = elev === "None" ? "—" : `${parseFloat(elev).toFixed(1)}°`;
-      if (telLit) telLit.textContent = lit;
-      if (telShadow) telShadow.textContent = shadow;
-      if (telGain) telGain.textContent = gain;
 
-      // Update optical vector and preview tile
-      if (opticalVector) opticalVector.textContent = vector;
+      // Update preview tile
       if (tileImg && tileFile) {
         tileImg.src = `assets/blender_renders/${tileFile}`;
-        tileImg.alt = `Simulated LROC observation: ${regime}`;
-      }
-      if (divBadge) {
-        if (div === "0.0%") {
-          divBadge.textContent = "Geometric Reference: 0.0% Error Baseline";
-        } else {
-          divBadge.textContent = `LFM Divergence: ${div} (Baseline: ${base})`;
-        }
+        tileImg.alt = `Rendered tile of the schematic crater: ${regime}`;
       }
     });
   });

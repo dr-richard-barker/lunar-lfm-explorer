@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-Blender 5.2 Python script to procedurally construct and export 3D physical models of Shackleton Crater
-with baked solar ray-marched shadows and regolith illumination for each illumination angle.
+Blender 5.2 Python script to export schematic 3D models of a Shackleton-like crater with baked
+ray-marched shadows for a few illustrative lighting angles. Not run through the LFM.
 
-Grounded Physical Geometry (LOLA / SLDEM2015):
-- Center: 89.9°S, 0.0°E
-- Rim Diameter: 21.0 km (Radius: 10.5 km)
-- Relief Depth: 4.2 km (Rim +1.2 km down to Floor -3.8 km)
-- Inner Wall Slope: 28° - 32°
-- Connecting Ridge: Elevated crest (+1.15 km) toward de Gerlache
-- Albedo: ~0.10 diffuse lunar regolith
+Schematic geometry: an analytic bowl with a smooth ridge. It is NOT derived from LOLA or
+SLDEM2015 data and has no geographic reference. Shackleton itself is centred at 89.67°S,
+129.78°E with a 20.92 km diameter (IAU Gazetteer, feature 5450).
+- Rim radius 10.5 km (21 km diameter), floor radius 3.5 km
+- Rim +1.2 km, floor -3.8 km: 5.0 km relief in the model (a modelling choice, not a measurement)
+- A smooth ridge (+1.15 km) added at 135° azimuth
+- Diffuse albedo 0.10 (a rendering choice)
 
 Exports optimized glTF binary (.glb) models compliant with ABAI L022 (<3 MB each).
 """
@@ -44,7 +44,7 @@ def compute_terrain_elevation(grid_size=128, domain_km=30.0):
     X, Y = np.meshgrid(xs, ys)
     R = np.sqrt(X**2 + Y**2)
 
-    # Physical parameters (in km)
+    # Schematic geometry parameters (in km)
     R_floor = 3.5
     R_rim = 10.5
     Z_floor = -3.8
@@ -53,11 +53,11 @@ def compute_terrain_elevation(grid_size=128, domain_km=30.0):
 
     Z = np.zeros_like(R)
 
-    # 1. Crater Floor (Flat, 40 K permanent cold trap)
+    # 1. Crater floor (flat)
     floor_mask = R <= R_floor
     Z[floor_mask] = Z_floor
 
-    # 2. Crater Inner Walls (Steep 28°-32° slopes)
+    # 2. Crater inner walls (power-law profile)
     wall_mask = (R > R_floor) & (R <= R_rim)
     norm_wall = (R[wall_mask] - R_floor) / (R_rim - R_floor)
     Z[wall_mask] = Z_floor + (Z_rim - Z_floor) * (norm_wall ** 1.35)
@@ -67,7 +67,7 @@ def compute_terrain_elevation(grid_size=128, domain_km=30.0):
     decay = (R_rim / np.maximum(R[rim_mask], R_rim)) ** 2.2
     Z[rim_mask] = Z_background + (Z_rim - Z_background) * decay
 
-    # 4. Connecting Ridge (Elevated ridge toward de Gerlache, ~135° azimuth)
+    # 4. Schematic ridge at ~135° azimuth (suggests the Shackleton-de Gerlache ridge; not real terrain)
     ridge_angle = math.radians(135.0)
     d_ridge = np.abs(-np.sin(ridge_angle) * X + np.cos(ridge_angle) * Y)
     s_ridge = np.cos(ridge_angle) * X + np.sin(ridge_angle) * Y

@@ -176,8 +176,8 @@
               <span class="metric-lbl">Patches / Modality</span>
             </div>
             <div class="metric-box">
-              <span class="metric-val" id="metric-seq">1,316</span>
-              <span class="metric-lbl">Total Sequence Tokens</span>
+              <span class="metric-val" id="metric-seq">1,280</span>
+              <span class="metric-lbl">Dense Tokens (5 WAC modalities)</span>
             </div>
           </div>
         </div>
@@ -187,8 +187,8 @@
           <p>Tokens are embedded per-modality and concatenated along the sequence dimension:</p>
           <div class="sequence-visualizer">
             <div class="token-block token-vis">Dense Image Tokens (e.g. 5 × 256 = 1,280 tokens)</div>
-            <div class="token-block token-opt">Optical Meta (8 tokens)</div>
-            <div class="token-block token-ctx">Static Context (28 tokens)</div>
+            <div class="token-block token-opt">Optical metadata (8 fields, ≤10 tokens)</div>
+            <div class="token-block token-ctx">Static-map context (28 fields, ≤31 tokens)</div>
           </div>
           <div class="info-alert mt-4">
             <strong>Late Fusion Advantage:</strong> Traditional baselines stack all bands as channels at the first layer. NASA-IBM LFM treats each modality with dedicated patch adapters and fuses at the attention layer, enabling missing modality robustness.

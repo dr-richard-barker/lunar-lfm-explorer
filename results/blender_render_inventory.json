@@ -1,0 +1,79 @@
+{
+  "model_inference_run": false,
+  "note": "Renders of a schematic mesh with illustrative lighting. They are not LROC data and were not passed through the NASA-IBM LFM.",
+  "mesh_specs": {
+    "geometry": "analytic bowl + Gaussian ridge at 135 deg azimuth; not derived from LOLA/SLDEM2015",
+    "domain_km": 30.0,
+    "grid_vertices": 160,
+    "rim_radius_km": 10.5,
+    "floor_radius_km": 3.5,
+    "rim_elevation_km": 1.2,
+    "floor_elevation_km": -3.8,
+    "relief_km": 5.0,
+    "ridge_peak_km": 1.15
+  },
+  "tiles": [
+    {
+      "file": "results/blender_renders/shackleton_inc85_azim000.png",
+      "solar_incidence_deg": 85.0,
+      "solar_elevation_deg": 5.0,
+      "solar_azimuth_deg": 0.0,
+      "width_px": 256,
+      "height_px": 256,
+      "size_bytes": 30002
+    },
+    {
+      "file": "results/blender_renders/shackleton_inc85_azim090.png",
+      "solar_incidence_deg": 85.0,
+      "solar_elevation_deg": 5.0,
+      "solar_azimuth_deg": 90.0,
+      "width_px": 256,
+      "height_px": 256,
+      "size_bytes": 31747
+    },
+    {
+      "file": "results/blender_renders/shackleton_inc85_azim180.png",
+      "solar_incidence_deg": 85.0,
+      "solar_elevation_deg": 5.0,
+      "solar_azimuth_deg": 180.0,
+      "width_px": 256,
+      "height_px": 256,
+      "size_bytes": 31563
+    },
+    {
+      "file": "results/blender_renders/shackleton_inc85_azim270.png",
+      "solar_incidence_deg": 85.0,
+      "solar_elevation_deg": 5.0,
+      "solar_azimuth_deg": 270.0,
+      "width_px": 256,
+      "height_px": 256,
+      "size_bytes": 31339
+    },
+    {
+      "file": "results/blender_renders/shackleton_inc70_azim120.png",
+      "solar_incidence_deg": 70.0,
+      "solar_elevation_deg": 20.0,
+      "solar_azimuth_deg": 120.0,
+      "width_px": 256,
+      "height_px": 256,
+      "size_bytes": 30919
+    }
+  ],
+  "flexivit_patch_grids_256px": {
+    "p8": {
+      "patch_size": 8,
+      "grid": "32x32",
+      "patches_per_modality": 1024
+    },
+    "p16": {
+      "patch_size": 16,
+      "grid": "16x16",
+      "patches_per_modality": 256
+    },
+    "p32": {
+      "patch_size": 32,
+      "grid": "8x8",
+      "patches_per_modality": 64
+    }
+  }
+}

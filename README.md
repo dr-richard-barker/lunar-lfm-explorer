@@ -14,15 +14,15 @@ The model is a multimodal, multi-resolution Vision Transformer (ViT-B) encoder�
 
 ## Key Features
 
-1. **Zero-Synthetic Model & Data Inspection (ABAI [[L006]])**
-   - Inspect ViT-B configuration (768 dim, 12 layers, 12 heads), parameter counts (~86M encoder), FSQ quantization levels `(8, 8, 8, 6, 5)`, and FlexiViT patch grids instantly without downloading the 12.8 GB model weights.
-   - **Zero-Synthetic Guarantee**: Absolute prohibition against silent synthetic fallback (no `np.random` masquerading as real results).
+1. **Model & Data Inspection without Synthetic Fallbacks (ABAI [[L006]])**
+   - Inspect ViT-B configuration (768 dim, 12 layers, 12 heads), an analytic parameter estimate (~85M encoder layers; the model card gives no count), FSQ quantization levels `(8, 8, 8, 6, 5)`, and FlexiViT patch grids without downloading the 12.8 GB model weights.
+   - **No synthetic fallback**: `load_pretrained_lfm()` raises unless the official checkpoint is found, or random initialisation is explicitly requested; nothing in `src/` or `scripts/` generates random results.
 2. **SomBench 11 Modalities System**
    - **WAC Family (51.2 km footprint, ~100 m/px):** Visible (`vis` 5 bands), UV (`uv` 2 bands), Topography (`dtm`), Slope (`slope`), Aspect (`aspect` sin/cos pair).
    - **NAC Family (512 m footprint, ~1 m/px):** Panchromatic (`nac`), Stereo DTM (`dtm_3m`), Slope (`slope_3m`), Aspect (`aspect_3m`).
    - **Context Sequences:** 8 Optical Metadata fields (solar incidence, emission, phase, azimuth angles) and 28 Static-Map context fields (Diviner thermophysics, LOLA roughness/PSR, Mini-RF radar, Kaguya mineralogy, GRAIL, Lunar Prospector).
 3. **Interactive Solar Geometry & Shadow Simulator**
-   - Dynamic simulation showing how solar incidence and azimuth angles govern lunar surface appearance and how the model sequences acquisition geometry to eliminate illumination confounds.
+   - Interactive sketch of how solar incidence and azimuth change lunar surface appearance; the model takes this acquisition geometry as input tokens.
 4. **Multi-Device Interactive Dashboard (ABAI [[L027]])**
    - Pure HTML5/CSS3/JS touch-first explorer with $\ge 44\text{px}$ touch targets, responsive across desktop monitors and iPad/tablet touchscreens.
 5. **SomBench Benchmark Ground Truth & Scientific Disclosures (ABAI [[L001]])**
@@ -31,12 +31,25 @@ The model is a multimodal, multi-resolution Vision Transformer (ViT-B) encoder�
 6. **FAIR Software Compliance (ABAI [[L025]])**
    - Machine-readable citation (`CITATION.cff`), CodeMeta metadata (`codemeta.json`), Apache-2.0 open-source licensing, and reproducible test suite.
 
+## Scope
+
+- The **Shackleton tab** shows only sourced facts: the IAU centre and diameter of Shackleton, and
+  which nearby regions were in NASA's Artemis III candidate lists of 2022 and 2024
+  (`docs/SHACKLETON_CONTEXT.md`). It gives no slope, sunlight or safety figures. The model card
+  says the model is not validated for landing-site certification or hazard clearance.
+- The **3D models and rendered tiles** are schematic: an analytic crater, not LOLA/SLDEM2015 terrain,
+  with illustrative lighting. They have not been run through the model.
+- On 15 Oct 2026 an `/abai check` removed fabricated content from earlier versions: a
+  "+38.7% shadow disambiguation gain" and per-tile divergences that were typed into a script,
+  landing-zone figures with no source, a wrong Shackleton position, and a self-written audit report
+  that cited files which never existed. See the commit history for details.
+
 ---
 
 ## Repository Structure
 
 ```
-Lunar_analysis/
+lunar-lfm-explorer/
 ├── CITATION.cff                        # FAIR citation metadata with grounded citations
 ├── codemeta.json                       # FAIR software metadata
 ├── LICENSE                             # Apache-2.0
@@ -51,19 +64,23 @@ Lunar_analysis/
 │       ├── model_inspect.py            # ViT-B, FlexiViT & tokenizer inspector
 │       ├── benchmarks.py               # SomBench benchmark records & disclosures
 │       ├── hub.py                      # Hugging Face client with offline resilience
+│       ├── inference.py                # Simplified ViT-B re-implementation (not the official model)
 │       ├── cli.py                      # CLI entry point (`lunar-lfm`)
 │       └── dashboard/                  # Interactive touch & desktop web explorer
 │           ├── app.py                  # Lightweight local HTTP server
 │           └── static/                 # Touch-responsive UI (HTML, CSS, JS, SVG)
 ├── scripts/
 │   ├── run_explorer.py                 # Convenience launcher (CLI or --serve)
-│   ├── verify_fair_compliance.py       # Automated FAIR & ABAI landmine auditor
-│   └── fetch_sample_metadata.py        # Hugging Face metadata caching utility
+│   ├── verify_fair_compliance.py       # FAIR & ABAI checks (scope stated in its output)
+│   ├── fetch_sample_metadata.py        # Hugging Face metadata caching utility
+│   ├── shackleton_context.py           # Shackleton facts with sources (IAU, NASA)
+│   ├── inventory_blender_renders.py    # Inventory of the schematic renders (no model run)
+│   └── blender/                        # Schematic 3D crater models (Blender 5.2)
 ├── tests/                              # Pytest test suite with non-vacuous assertions
-├── tables/                             # CSV reference tables for modalities & benchmarks
-├── results/                            # JSON dataset summaries
+├── tables/                             # CSV tables: modalities, benchmarks, Shackleton regions
+├── results/                            # JSON summaries and render inventory
 ├── figures/                            # Vector architecture diagrams (ABAI L018)
-└── docs/                               # Architecture, SomBench, and ABAI audit docs
+└── docs/                               # GitHub Pages site + architecture, SomBench, Shackleton notes
 ```
 
 ---
@@ -74,8 +91,8 @@ Lunar_analysis/
 
 Clone and install in editable mode:
 ```bash
-git clone https://github.com/dr-richard-barker/Lunar_analysis.git
-cd Lunar_analysis
+git clone https://github.com/dr-richard-barker/lunar-lfm-explorer.git
+cd lunar-lfm-explorer
 pip install -e .
 ```
 
@@ -139,7 +156,7 @@ python3 scripts/verify_fair_compliance.py
 The compliance script mechanically verifies:
 - FAIR metadata files exist and are non-empty
 - Zero template-fabricated DOIs exist across all files ([[L003]])
-- Zero silent synthetic fallbacks (`np.random`) exist in source code ([[L006]])
+- No random-number generation in `src/` or `scripts/` ([[L006]]); this does not detect hard-coded values
 - Large model binaries (`*.pt`, `*.safetensors`, ~12.8 GB) are excluded from Git ([[L022]])
 - Directory layout matches standard scientific research scaffolding ([[L025]])
 - Non-vacuous test assertions pass ([[L008]])

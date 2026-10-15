@@ -3,7 +3,7 @@
 Test discovery and runner for lunar-lfm-explorer.
 
 Supports execution with standard Python (zero dependencies) or via pytest.
-Runs all test modules in tests/:
+Runs every test module imported in run_tests() below, including:
   - test_modalities.py
   - test_model_specs.py
   - test_benchmarks.py
@@ -19,6 +19,25 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR / "src"))
 sys.path.insert(0, str(ROOT_DIR))
+
+
+class MiniMonkeyPatch:
+    """setattr("pkg.module.attr", value) with undo(), like pytest's monkeypatch fixture."""
+
+    def __init__(self):
+        self._undo = []
+
+    def setattr(self, target, value):
+        import importlib
+        module_path, attr = target.rsplit(".", 1)
+        obj = importlib.import_module(module_path)
+        self._undo.append((obj, attr, getattr(obj, attr)))
+        setattr(obj, attr, value)
+
+    def undo(self):
+        for obj, attr, old in reversed(self._undo):
+            setattr(obj, attr, old)
+        self._undo.clear()
 
 
 def run_tests() -> bool:
@@ -56,12 +75,14 @@ def run_tests() -> bool:
                         # Check parameters
                         sig = inspect.signature(fn)
                         if "tmp_path" in sig.parameters and "monkeypatch" in sig.parameters:
-                            # Mock monkeypatch
-                            class MockMonkeyPatch:
-                                def setattr(self, target, val):
-                                    pass
-                            with tempfile.TemporaryDirectory() as td:
-                                fn(Path(td), MockMonkeyPatch())
+                            # Minimal working monkeypatch (an earlier stub did nothing, so
+                            # patched tests silently ran against the real network).
+                            mp = MiniMonkeyPatch()
+                            try:
+                                with tempfile.TemporaryDirectory() as td:
+                                    fn(Path(td), mp)
+                            finally:
+                                mp.undo()
                         elif "tmp_path" in sig.parameters:
                             with tempfile.TemporaryDirectory() as td:
                                 fn(Path(td))

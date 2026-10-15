@@ -91,13 +91,16 @@ def cmd_model(args: argparse.Namespace) -> None:
     print(f"Patches / Modality:  {total_patches}")
 
     seq = arch.compute_sequence_length(num_dense_modalities=5, patch_size=patch_size)
-    print(f"\nExample Sequence Length (WAC: 5 dense + 8 optical + 28 static context):")
-    print(f"Total Sequence:      {seq['total_sequence_length']} tokens")
+    print(f"\nExample Sequence Length (WAC: 5 dense modalities + 2 context sequences):")
+    print(f"Dense tokens:        {seq['dense_tokens']}")
+    print(f"Context (max):       {seq['optical_metadata_tokens']} metadata + {seq['static_context_tokens']} static-map "
+          f"(max_length in the released backbone/config.yaml)")
+    print(f"Total (upper bound): {seq['total_sequence_length']} tokens")
 
 
 def cmd_benchmarks(args: argparse.Namespace) -> None:
     """Print benchmark evaluation results and scientific disclosures."""
-    print("\n--- SomBench Benchmark Evaluations (Reported Ground Truth) ---")
+    print("\n--- SomBench Benchmark Results (as reported in the model card) ---")
     for b in BENCHMARKS.values():
         dir_sym = "↑" if b.metric_direction == "maximize" else "↓"
         print(f"\nTask: {b.name} [{b.scale_family}]")

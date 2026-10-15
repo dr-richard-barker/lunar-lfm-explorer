@@ -1,0 +1,36 @@
+{
+  "crater": {
+    "feature_name": "Shackleton",
+    "center_latitude_deg": -89.67,
+    "center_longitude_deg": 129.78,
+    "diameter_km": 20.92,
+    "source": "https://planetarynames.wr.usgs.gov/Feature/5450",
+    "not_recorded": "Depth, floor temperature and wall slopes are not given here: they need a cited LOLA/Diviner source before they are stated."
+  },
+  "candidate_regions": [
+    {
+      "key": "CR",
+      "name": "Connecting Ridge",
+      "nasa_2022_list": true,
+      "nasa_2024_list": false
+    },
+    {
+      "key": "PNS",
+      "name": "Peak Near Shackleton",
+      "nasa_2022_list": true,
+      "nasa_2024_list": false
+    },
+    {
+      "key": "CRE",
+      "name": "Connecting Ridge Extension",
+      "nasa_2022_list": true,
+      "nasa_2024_list": false
+    }
+  ],
+  "sources": {
+    "nasa_2022_release_13_regions": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/",
+    "nasa_2024_update_9_regions": "https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/",
+    "lroc_quickmap_south_pole": "https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10"
+  },
+  "model_card_disclosure": "Not validated for operational decisions such as landing-site certification or hazard clearance."
+}

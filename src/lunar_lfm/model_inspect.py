@@ -7,7 +7,7 @@ tokenizer FSQ levels, and parameter estimates without needing the 12.8 GB weight
 
 from dataclasses import dataclass
 from typing import Dict, List, Tuple, Any
-from lunar_lfm.config import MODEL_SPECS, ModelSpecs
+from lunar_lfm.config import MODEL_SPECS, ModelSpecs, METADATA_SEQ_MAX_TOKENS, STATIC_MAPS_SEQ_MAX_TOKENS
 
 
 @dataclass(frozen=True)
@@ -52,11 +52,15 @@ class ModelArchitecture:
         """
         Calculate token sequence lengths for multi-modal late fusion.
         Tokens are concatenated along the sequence dimension.
+
+        Dense tokens are exact (patches per modality x modalities). The two context
+        sequences are text-tokenized, so their lengths are the maximum lengths set in
+        the released backbone/config.yaml (10 and 31), and the total is an upper bound.
         """
         _, _, patches_per_modality = self.compute_patch_grid(patch_size)
         dense_tokens = num_dense_modalities * patches_per_modality
-        optical_tokens = 8 if has_optical_metadata else 0
-        context_tokens = 28 if has_static_context else 0
+        optical_tokens = METADATA_SEQ_MAX_TOKENS if has_optical_metadata else 0
+        context_tokens = STATIC_MAPS_SEQ_MAX_TOKENS if has_static_context else 0
         total_tokens = dense_tokens + optical_tokens + context_tokens
 
         return {

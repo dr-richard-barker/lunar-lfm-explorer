@@ -51,3 +51,10 @@ class ModelSpecs:
 
 
 MODEL_SPECS = ModelSpecs()
+
+# Context-sequence lengths from the released backbone/config.yaml on Hugging Face
+# (model.encoder_embedding_params: metadata.max_length = 10, static_maps.max_length = 31).
+# The 8 optical-metadata and 28 static-map fields are binned and text-tokenized, so a field is
+# not one token; these are the maximum sequence lengths the model accepts.
+METADATA_SEQ_MAX_TOKENS = 10
+STATIC_MAPS_SEQ_MAX_TOKENS = 31

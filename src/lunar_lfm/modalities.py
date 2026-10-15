@@ -147,43 +147,48 @@ OPTICAL_METADATA_FIELDS: Tuple[Dict[str, str], ...] = (
 )
 
 # The 28 Static-Map Context Fields (Footprint Averages)
+# The model card confirms 28 fields and names these keys: TREG, TBOL, ROCK_ABUND, HPAR, DICE,
+# ROUGHNESS, PSR, AVG_ILLUM, ALBEDO, MINIRF_*, MI_*, SW_FE, SP_MINER, nr643, TIO2, WAC_*, GRAVITY,
+# HYDROGEN. Descriptions below follow the SomBench dataset card. The card does not list the full
+# set of 28 keys, so entries marked UNVERIFIED are placeholders that keep the count at 28 and
+# must be checked against the released backbone/config.yaml before they are relied on.
 STATIC_CONTEXT_FIELDS: Tuple[Dict[str, str], ...] = (
-    # Diviner Thermophysics (5)
-    {"key": "TREG", "instrument": "LRO Diviner", "desc": "Regolith surface temperature model"},
-    {"key": "TBOL", "instrument": "LRO Diviner", "desc": "Bolometric brightness temperature"},
-    {"key": "ROCK_ABUND", "instrument": "LRO Diviner", "desc": "Surface rock abundance fraction"},
-    {"key": "HPAR", "instrument": "LRO Diviner", "desc": "Thermal parameter H (scale depth)"},
-    {"key": "DICE", "instrument": "LRO Diviner", "desc": "Depth to ice stability / ice prospectivity index"},
-    # LOLA Altimeter & Surface Metrics (4)
-    {"key": "ROUGHNESS", "instrument": "LRO LOLA", "desc": "Kilometer-scale surface roughness"},
-    {"key": "PSR", "instrument": "LRO LOLA", "desc": "Permanently Shadowed Region flag/coverage"},
-    {"key": "AVG_ILLUM", "instrument": "LRO LOLA", "desc": "Annual average solar illumination fraction"},
-    {"key": "ALBEDO", "instrument": "LRO LOLA", "desc": "Normal albedo at 1064 nm"},
-    # Mini-RF Synthetic Aperture Radar (3)
-    {"key": "MINIRF_CPR", "instrument": "Mini-RF", "desc": "Circular Polarization Ratio (ice vs rough blockiness)"},
-    {"key": "MINIRF_S1", "instrument": "Mini-RF", "desc": "Total backscattered Stokes power"},
-    {"key": "MINIRF_DOP", "instrument": "Mini-RF", "desc": "Degree of Polarization"},
-    # Kaguya / SELENE Spectral Mineralogy (3)
-    {"key": "MI_MINERAL", "instrument": "Kaguya MI", "desc": "Multiband Imager mineral composition index"},
-    {"key": "SW_FE", "instrument": "Kaguya SP", "desc": "Spectral Profiler estimated FeO weight percent"},
-    {"key": "SP_MINER", "instrument": "Kaguya SP", "desc": "Plagioclase / pyroxene / olivine mineral map index"},
-    # LROC WAC Color & Compositional Indexes (3)
-    {"key": "nr643", "instrument": "LROC WAC", "desc": "Normalized reflectance at 643 nm"},
-    {"key": "TIO2", "instrument": "LROC WAC", "desc": "Estimated TiO2 abundance map"},
-    {"key": "WAC_MATURITY", "instrument": "LROC WAC", "desc": "Optical maturity parameter (OMAT)"},
-    # GRAIL Gravity Model (1)
-    {"key": "GRAVITY", "instrument": "GRAIL", "desc": "Bouguer gravity anomaly / crustal density variation"},
-    # Lunar Prospector Neutron Spectrometer (1)
-    {"key": "HYDROGEN", "instrument": "Lunar Prospector", "desc": "Epithermal neutron flux / hydrogen enrichment"},
-    # Additional Contextual Channels (8)
-    {"key": "SLOPE_MEAN", "instrument": "SLDEM2015", "desc": "Tile-mean topographic slope"},
-    {"key": "SLOPE_STD", "instrument": "SLDEM2015", "desc": "Tile slope standard deviation"},
-    {"key": "ELEVATION_MEAN", "instrument": "SLDEM2015", "desc": "Tile-mean elevation above lunar sphere (1737.4 km)"},
-    {"key": "ELEVATION_MIN", "instrument": "SLDEM2015", "desc": "Tile minimum elevation"},
-    {"key": "ELEVATION_MAX", "instrument": "SLDEM2015", "desc": "Tile maximum elevation"},
-    {"key": "MAX_SURF_TEMP", "instrument": "LRO Diviner", "desc": "Maximum annual surface temperature"},
-    {"key": "MIN_SURF_TEMP", "instrument": "LRO Diviner", "desc": "Minimum annual surface temperature"},
-    {"key": "SUB_SURF_TEMP", "instrument": "LRO Diviner", "desc": "Predicted temperature at 1m depth"},
+    # Diviner (5)
+    {"key": "TREG", "instrument": "LRO Diviner", "desc": "Nighttime regolith temperature anomaly"},
+    {"key": "TBOL", "instrument": "LRO Diviner", "desc": "Bolometric temperature"},
+    {"key": "ROCK_ABUND", "instrument": "LRO Diviner", "desc": "Rock abundance (areal fraction of m-scale rocks)"},
+    {"key": "HPAR", "instrument": "LRO Diviner", "desc": "H-parameter (regolith density scale height)"},
+    {"key": "DICE", "instrument": "LRO Diviner", "desc": "Ice stability depth"},
+    # LOLA (4)
+    {"key": "ROUGHNESS", "instrument": "LRO LOLA", "desc": "Roughness at 50 m baseline (1 km product)"},
+    {"key": "PSR", "instrument": "LRO LOLA", "desc": "Permanently shadowed region mask"},
+    {"key": "AVG_ILLUM", "instrument": "LRO LOLA", "desc": "Average Sun illumination over the 18.6-yr precession cycle"},
+    {"key": "ALBEDO", "instrument": "LRO LOLA", "desc": "1064 nm normal albedo"},
+    # Mini-RF (3)
+    {"key": "MINIRF_CPR", "instrument": "LRO Mini-RF", "desc": "Circular polarization ratio"},
+    {"key": "MINIRF_S1", "instrument": "LRO Mini-RF", "desc": "S-band radar reflectivity"},
+    {"key": "MINIRF_DOP", "instrument": "LRO Mini-RF", "desc": "UNVERIFIED: not listed in the model or dataset card"},
+    # Kaguya / SELENE (3)
+    {"key": "MI_MINERAL", "instrument": "SELENE/Kaguya MI", "desc": "UNVERIFIED key name; dataset card has MI normalized reflectance and MI mineralogy"},
+    {"key": "SW_FE", "instrument": "SELENE/Kaguya MI", "desc": "Space-weathering Fe (smFe, mpFe, npFe)"},
+    {"key": "SP_MINER", "instrument": "SELENE/Kaguya SP", "desc": "Polar mineralogy (olivine, plagioclase, HCP, LCP, FeO, npFe, OMAT)"},
+    # LROC WAC (3)
+    {"key": "nr643", "instrument": "LRO LROC WAC", "desc": "643 nm normalized reflectance"},
+    {"key": "TIO2", "instrument": "LRO LROC WAC", "desc": "WAC-derived TiO2 abundance"},
+    {"key": "WAC_MATURITY", "instrument": "LRO LROC WAC", "desc": "UNVERIFIED: not listed in the model or dataset card"},
+    # GRAIL (1)
+    {"key": "GRAVITY", "instrument": "GRAIL", "desc": "Free-air gravity disturbance"},
+    # Lunar Prospector (1)
+    {"key": "HYDROGEN", "instrument": "Lunar Prospector NS", "desc": "Hydrogen abundance"},
+    # Remaining 8 slots: UNVERIFIED placeholders (no source names these keys)
+    {"key": "SLOPE_MEAN", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "SLOPE_STD", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "ELEVATION_MEAN", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "ELEVATION_MIN", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "ELEVATION_MAX", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "MAX_SURF_TEMP", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "MIN_SURF_TEMP", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
+    {"key": "SUB_SURF_TEMP", "instrument": "UNVERIFIED", "desc": "UNVERIFIED placeholder"},
 )
 
 

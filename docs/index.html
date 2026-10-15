@@ -44,8 +44,8 @@
       <button class="nav-tab" data-tab="tab-modalities">11 Modalities</button>
       <button class="nav-tab" data-tab="tab-geometry">Solar Geometry</button>
       <button class="nav-tab" data-tab="tab-architecture">ViT-B &amp; FlexiViT</button>
-      <button class="nav-tab" data-tab="tab-shackleton">Artemis IV &amp; QuickMap</button>
-      <button class="nav-tab" data-tab="tab-3d-lab">3D Solar Lab</button>
+      <button class="nav-tab" data-tab="tab-shackleton">Shackleton &amp; QuickMap</button>
+      <button class="nav-tab" data-tab="tab-3d-lab">3D Lighting Lab</button>
       <button class="nav-tab" data-tab="tab-benchmarks">Benchmarks &amp; Disclosures</button>
       <button class="nav-tab" data-tab="tab-hub">Hugging Face Hub</button>
     </nav>
@@ -76,7 +76,7 @@
             <span class="feature-icon">☀️</span>
             <div>
               <h3>Acquisition Geometry as Explicit Context</h3>
-              <p>Lunar appearance is dominated by solar illumination angles rather than intrinsic surface variations. The model tokenizes incidence, emission, phase, and azimuth as sequence inputs, resolving the dominant illumination confound directly.</p>
+              <p>Lunar appearance is dominated by solar illumination angles rather than intrinsic surface variations. The model tokenizes incidence, emission, phase, and azimuth as sequence inputs, so it is given the dominant illumination confound rather than having to infer it (model card).</p>
             </div>
           </div>
           <div class="feature-item">
@@ -118,7 +118,7 @@
       <div class="grid-2col">
         <div class="card">
           <h2>Interactive Illumination Simulator</h2>
-          <p class="text-muted">Explore how solar incidence and azimuth cast dramatic shadows across lunar topography, creating the visual confounds that NASA-IBM LFM solves via sequence tokenization.</p>
+          <p class="text-muted">Explore how solar incidence and azimuth cast dramatic shadows across lunar topography, the visual confound that NASA-IBM LFM receives as sequence tokens.</p>
 
           <div class="control-group">
             <label for="solar-incidence">Solar Incidence Angle (Elevation from Zenith): <span id="val-incidence">65°</span></label>
@@ -188,8 +188,8 @@
               <span class="metric-lbl">Patches / Modality</span>
             </div>
             <div class="metric-box">
-              <span class="metric-val" id="metric-seq">1,316</span>
-              <span class="metric-lbl">Total Sequence Tokens</span>
+              <span class="metric-val" id="metric-seq">1,280</span>
+              <span class="metric-lbl">Dense Tokens (5 WAC modalities)</span>
             </div>
           </div>
         </div>
@@ -199,11 +199,11 @@
           <p>Tokens are embedded per-modality and concatenated along the sequence dimension:</p>
           <div class="sequence-visualizer">
             <div class="token-block token-vis">Dense Image Tokens (5 × 256 = 1,280 tokens)</div>
-            <div class="token-block token-opt">Optical Meta (8 tokens)</div>
-            <div class="token-block token-ctx">Static Context (28 tokens)</div>
+            <div class="token-block token-opt">Optical metadata (8 fields, ≤10 tokens)</div>
+            <div class="token-block token-ctx">Static-map context (28 fields, ≤31 tokens)</div>
           </div>
           <div class="info-alert mt-4">
-            <strong>Late Fusion Advantage:</strong> Traditional baselines stack all bands as channels at the first layer. NASA-IBM LFM treats each modality with dedicated patch adapters and fuses at the attention layer, enabling missing modality robustness.
+            <strong>Late fusion:</strong> baselines stack all layers as channels at a shared stem. NASA-IBM LFM gives each modality its own patch adapter and concatenates tokens along the sequence axis, so modalities can be dropped or added at fine-tuning time (model card). Context lengths ≤10 and ≤31 are the max_length values in the released backbone/config.yaml.
           </div>
         </div>
       </div>
@@ -213,24 +213,23 @@
         <div class="scheme-container text-center" style="background: rgba(10, 13, 20, 0.6); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color, #30363d); overflow-x: auto;">
           <img src="assets/model_scheme.svg" alt="NASA-IBM Lunar Foundation Model Architecture Diagram" style="max-width: 100%; height: auto; border-radius: 4px;" />
         </div>
-        <p class="caption text-center mt-2">Figure 1: Multimodal tokenization and fusion pipeline spanning 13 lunar modalities (LROC NAC, WAC, Kaguya TC, SLDEM2015, LOLA slope, Diviner rock abundance, solar geometry, location coordinates) into ViT-B transformer backbone with late fusion and task decoders.</p>
+        <p class="caption text-center mt-2">Figure 1: Tokenization and fusion scheme for the 11 modalities: 9 dense (WAC: vis, uv, dtm, slope, aspect; NAC: nac, dtm_3m, slope_3m, aspect_3m) plus the optical-metadata and static-map context sequences, feeding the ViT-B encoder. Diagram drawn for this explorer; the official scheme is model_scheme.png in the model's Hugging Face repository.</p>
       </div>
     </section>
 
-    <!-- TAB: ARTEMIS IV & SHACKLETON CRATER -->
+    <!-- TAB: SHACKLETON CRATER & QUICKMAP -->
     <section id="tab-shackleton" class="tab-pane">
       <div class="grid-2col">
         <div class="card">
-          <h2>Artemis Candidate Landing Zones</h2>
-          <p class="text-muted">Explore South Polar candidate landing sites around Shackleton Crater (89.9°S, 0.0°E) evaluated for slope trafficability, illumination stability, and volatile cold-trap proximity.</p>
-          
+          <h2>Candidate Landing Regions near Shackleton</h2>
+          <p class="text-muted">Shackleton crater is centred at 89.67°S, 129.78°E, with a 20.92 km diameter (<a href="https://planetarynames.wr.usgs.gov/Feature/5450" target="_blank" rel="noopener">IAU Gazetteer</a>). NASA named the three regions below among 13 Artemis III candidate landing regions in <a href="https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/" target="_blank" rel="noopener">August 2022</a>; none of them is in NASA's updated list of 9 regions (<a href="https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/" target="_blank" rel="noopener">October 2024</a>).</p>
+
           <div class="control-group">
-            <label>Select Candidate Region:</label>
+            <label>Select Region:</label>
             <div class="btn-group" id="shackleton-zone-buttons">
-              <button class="btn btn-zone active" data-zone="CR-1">Connecting Ridge (Primary)</button>
-              <button class="btn btn-zone" data-zone="PNS-1">Peak Near Shackleton</button>
-              <button class="btn btn-zone" data-zone="CRE-1">Ridge Extension</button>
-              <button class="btn btn-zone" data-zone="SR-1">Rim Crest</button>
+              <button class="btn btn-zone active" data-zone="CR">Connecting Ridge</button>
+              <button class="btn btn-zone" data-zone="PNS">Peak Near Shackleton</button>
+              <button class="btn btn-zone" data-zone="CRE">Connecting Ridge Extension</button>
             </div>
           </div>
 
@@ -240,122 +239,36 @@
 
           <div class="mt-4">
             <a id="shackleton-quickmap-btn" href="https://quickmap.lroc.im-ldi.com/?extent=-180,-90,180,-85&proj=10" target="_blank" rel="noopener" class="btn btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 18px; font-weight: bold;">
-              🗺️ Open in LROC QuickMap (South Pole 3D GIS)
+              🗺️ Open in LROC QuickMap (South Pole)
             </a>
-            <span class="text-muted text-sm" style="display: block; margin-top: 6px;">Directly cross-examine raw LROC NAC mosaics, LOLA slope, and Diviner thermal maps on ACT-REACT QuickMap.</span>
+            <span class="text-muted text-sm" style="display: block; margin-top: 6px;">Inspect LROC NAC mosaics, LOLA slope and Diviner thermal maps for these regions on ACT-REACT QuickMap.</span>
           </div>
         </div>
 
         <div class="card">
-          <h2>Interactive Landing Hazard &amp; Ingress Simulator</h2>
-          <p class="text-muted">Simulate autonomous touchdown clearance and rover ingress feasibility based on NASA-IBM LFM slope and boulder predictions.</p>
-
-          <div class="control-group">
-            <label for="slider-slope-thresh">Maximum Lander Slope Limit: <span id="val-slope-thresh">10.0°</span></label>
-            <input type="range" id="slider-slope-thresh" min="5" max="20" step="0.5" value="10.0" class="touch-slider">
+          <h2>What This Explorer Does and Does Not Show</h2>
+          <p class="text-muted">This repository holds no slope, illumination, Earth-visibility or rock-abundance data for these regions, so it shows none, and it gives no safety ratings.</p>
+          <div class="callout-box mt-3">
+            <h4>Model card disclosure</h4>
+            <p class="text-muted text-sm mt-1">The NASA-IBM LFM is "not validated for operational decisions such as landing-site certification or hazard clearance". The model card reports no landing-hazard or shadow-disambiguation evaluation, and this repository has run none.</p>
           </div>
-
-          <div class="control-group">
-            <label for="slider-rock-thresh">Diviner Rock Abundance Limit: <span id="val-rock-thresh">0.05</span></label>
-            <input type="range" id="slider-rock-thresh" min="0.01" max="0.12" step="0.01" value="0.05" class="touch-slider">
+          <div class="callout-box mt-3">
+            <h4>Why polar lighting is hard</h4>
+            <p class="text-muted text-sm mt-1">At Shackleton's latitude the Sun is never more than about 1.9° above the horizon (0.33° from the pole plus the Moon's 1.54° axial tilt), so long shadows dominate. The model takes each tile's illumination angles as input tokens rather than having to infer them from the image.</p>
           </div>
-
-          <div class="metric-row">
-            <div class="metric-box">
-              <span class="metric-val" id="metric-safe-pct">78.4%</span>
-              <span class="metric-lbl">Safe Touchdown Area</span>
-            </div>
-            <div class="metric-box">
-              <span class="metric-val" id="metric-power-score">High (87%)</span>
-              <span class="metric-lbl">Solar Power Status</span>
-            </div>
-            <div class="metric-box">
-              <span class="metric-val" id="metric-psr-access">1.2 km</span>
-              <span class="metric-lbl">Cold Trap Distance</span>
-            </div>
-          </div>
-
-          <div class="hazard-canvas-container mt-3" style="background: rgba(10, 13, 20, 0.6); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color, #30363d);">
-            <svg id="shackleton-map-svg" viewBox="0 0 320 220" width="100%" height="200">
-              <defs>
-                <radialGradient id="crater-abyss" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#020305" />
-                  <stop offset="75%" stop-color="#0c0e14" />
-                  <stop offset="100%" stop-color="#242831" />
-                </radialGradient>
-              </defs>
-              <!-- Shackleton Rim Circle -->
-              <circle cx="160" cy="110" r="85" fill="url(#crater-abyss)" stroke="#606775" stroke-width="2" />
-              <!-- Crater Abyss Label -->
-              <text x="160" y="105" fill="#38bdf8" font-size="10" text-anchor="middle" font-weight="bold">SHACKLETON FLOOR</text>
-              <text x="160" y="120" fill="#94a3b8" font-size="9" text-anchor="middle">40 K Cold Trap (PSR)</text>
-              <!-- Connecting Ridge Highlight -->
-              <path id="svg-ridge-path" d="M 80 40 Q 120 70 145 95" stroke="#fbbf24" stroke-width="6" fill="none" opacity="0.8" />
-              <!-- Selected Landing Site Indicator -->
-              <circle id="svg-landing-site" cx="120" cy="70" r="10" fill="#22c55e" stroke="#ffffff" stroke-width="2" />
-              <text id="svg-site-label" x="120" y="55" fill="#22c55e" font-size="9" text-anchor="middle" font-weight="bold">CR-1 (Landing Ellipse)</text>
-              <!-- Rover Traversal Path -->
-              <line id="svg-rover-line" x1="120" y1="70" x2="148" y2="98" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4" />
-              <!-- North / Azimuth Indicator -->
-              <text x="290" y="25" fill="#f6c343" font-size="9" text-anchor="end">☀️ Sun Azim 120°</text>
-            </svg>
-          </div>
-          <p class="caption text-center mt-2">South Pole orthographic projection: Green landing ellipse on Connecting Ridge with dashed rover ingress corridor to the 40 K permanent cold trap</p>
         </div>
       </div>
 
-      <!-- INTERACTIVE SCIENTIFIC PIPELINE TABLE -->
+      <!-- SCHEMATIC 3D BLENDER MODEL -->
       <div class="card mt-4">
         <div class="toolbar">
           <div>
-            <h2>Artemis IV Scientific Pipeline Evaluation Table</h2>
-            <p class="text-muted">Interactive trade matrix comparing candidate South Polar landing sites around Shackleton Crater. Click any row or column header to sort, explore, and launch directly into LROC QuickMap 3D GIS.</p>
-          </div>
-          <div class="filter-controls">
-            <input type="text" id="shackleton-table-search" placeholder="Filter sites by keyword..." class="input-search" aria-label="Filter landing sites" />
-          </div>
-        </div>
-
-        <div class="table-responsive">
-          <table class="data-table" id="shackleton-pipeline-table">
-            <thead>
-              <tr>
-                <th data-sort="id" class="sortable">Zone ID ⬍</th>
-                <th data-sort="name" class="sortable">Candidate Region ⬍</th>
-                <th data-sort="elev" class="sortable">Elevation ⬍</th>
-                <th data-sort="slope_safe" class="sortable">Safe Slope (&lt;10°) ⬍</th>
-                <th data-sort="illum_mean" class="sortable">Annual Sun ⬍</th>
-                <th data-sort="dte_vis" class="sortable">Earth LOS ⬍</th>
-                <th data-sort="psr_dist_km" class="sortable">Dist to PSR ⬍</th>
-                <th data-sort="rock_frac" class="sortable">Rock Abund ⬍</th>
-                <th data-sort="safety_score" class="sortable">Safety Score ⬍</th>
-                <th>QuickMap 3D</th>
-              </tr>
-            </thead>
-            <tbody id="shackleton-table-body">
-              <!-- Rendered dynamically by app.js -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="callout-box mt-3">
-          <h3 style="color: var(--accent-gold); font-size: 0.92rem; margin-bottom: 8px;">NASA-IBM Lunar Foundation Model Scientific Pipeline Synthesis</h3>
-          <p class="text-muted text-sm">
-            At the lunar South Pole, the Sun grazes the terrain at 85°–89° incidence, causing deep cast shadows that standard optical vision models mistake for hazardous micro-craters or boulders. NASA-IBM LFM conditions on spacecraft Ephemeris illumination tokens (<code>INCIDENCE</code>, <code>EMISSION</code>, <code>PHASE</code>, <code>AZIMUTH</code>) across 13 multimodal inputs, yielding a <strong>+34.2% shadow disambiguation gain</strong> on Connecting Ridge (CR-1) and safely mapping rover traversal routes to the 40 K volatile cold trap.
-          </p>
-        </div>
-      </div>
-
-      <!-- 3D BLENDER MODEL & SHADOW SIMULATION VIEWER -->
-      <div class="card mt-4">
-        <div class="toolbar">
-          <div>
-            <h2>3D Shackleton Crater Physical Model &amp; Illumination Rig (Blender 5.2)</h2>
-            <p class="text-muted">Interactive 3D mesh (21 km rim diameter, 4.2 km depth, 28°–32° inner wall relief) and multi-angle simulated LROC NAC observation tiles.</p>
+            <h2>Schematic 3D Crater Model (Blender 5.2)</h2>
+            <p class="text-muted">An analytic mesh: 21 km rim diameter, rim +1.2 km and floor −3.8 km (5.0 km relief in the model), with a smooth ridge added at 135° azimuth. It is not derived from LOLA or SLDEM2015 data. Rendered tiles use illustrative lighting.</p>
           </div>
           <div class="btn-group" id="blender-view-toggle">
             <button class="btn btn-sm btn-blender-tab active" data-view="3d-mesh">Interactive 3D Model</button>
-            <button class="btn btn-sm btn-blender-tab" data-view="illum-gallery">Multi-Angle Rendered Tiles</button>
+            <button class="btn btn-sm btn-blender-tab" data-view="illum-gallery">Rendered Tiles</button>
           </div>
         </div>
 
@@ -364,7 +277,7 @@
             <model-viewer
               id="shackleton-3d-viewer"
               src="assets/shackleton.glb"
-              alt="3D Procedural Mesh of Shackleton Crater and Connecting Ridge"
+              alt="Schematic 3D mesh of a Shackleton-like crater with a ridge"
               auto-rotate
               camera-controls
               rotation-per-second="15deg"
@@ -378,7 +291,7 @@
               <span>🌕 Drag to Orbit · Scroll/Pinch to Zoom · 897 KB glTF Mesh</span>
             </div>
           </div>
-          <p class="caption text-center mt-2">Grounded 3D mesh generated headless via Blender 5.2 LTS from LOLA/SLDEM2015 topography (160×160 vertex resolution, 30×30 km footprint)</p>
+          <p class="caption text-center mt-2">Schematic mesh generated headless in Blender 5.2 from an analytic formula (160×160 vertices, 30×30 km); not real terrain. Source: scripts/blender/generate_shackleton_3d.py</p>
         </div>
 
         <div id="view-illum-gallery" class="blender-view-pane" style="display: none;">
@@ -387,60 +300,46 @@
               <div class="control-group">
                 <label>Select Illumination Angle:</label>
                 <div class="btn-group" id="render-tile-buttons">
-                  <button class="btn btn-sm btn-tile active" data-tile="shackleton_inc85_azim000.png" data-inc="85.0" data-azim="0.0" data-title="Polar Grazing North (Inc 85°, Azim 0°)" data-desc="Extreme grazing sunlight casts shadow across 80% of the crater bowl. Standard vision models detect false steep drops at shadow terminators; NASA-IBM LFM conditions on solar tokens to recover true topography.">Inc 85° / Azim 0° (North)</button>
-                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc85_azim090.png" data-inc="85.0" data-azim="90.0" data-title="Polar Grazing East (Inc 85°, Azim 90°)" data-desc="Shadow flips across the eastern rim. Notice how the Connecting Ridge crest remains in sunlight while the crater floor stays deeply submerged in the 40 K cold trap.">Inc 85° / Azim 90° (East)</button>
-                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc85_azim180.png" data-inc="85.0" data-azim="180.0" data-title="Polar Grazing South (Inc 85°, Azim 180°)" data-desc="Illumination from the south highlights the northern rim rampart. Conventional classifiers diverge by 42.8%, whereas NASA-IBM LFM produces consistent slope embeddings (4.1% divergence).">Inc 85° / Azim 180° (South)</button>
-                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc85_azim270.png" data-inc="85.0" data-azim="270.0" data-title="Polar Grazing West (Inc 85°, Azim 270°)" data-desc="Western illumination casts shadows opposite to the east run. The ViT-B multimodal self-attention decouples shadow boundaries from true physical crater walls.">Inc 85° / Azim 270° (West)</button>
-                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc70_azim120.png" data-inc="70.0" data-azim="120.0" data-title="Sub-Polar Summer (Inc 70°, Azim 120°)" data-desc="Higher solar elevation partially illuminates the upper crater terraces, demonstrating multi-incidence generalization across seasonal changes.">Inc 70° / Azim 120° (Summer)</button>
+                  <button class="btn btn-sm btn-tile active" data-tile="shackleton_inc85_azim000.png" data-title="Incidence 85°, azimuth 0°" data-desc="Sun 5° above the horizon from azimuth 0°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 0°</button>
+                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc85_azim090.png" data-title="Incidence 85°, azimuth 90°" data-desc="Sun 5° above the horizon from azimuth 90°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 90°</button>
+                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc85_azim180.png" data-title="Incidence 85°, azimuth 180°" data-desc="Sun 5° above the horizon from azimuth 180°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 180°</button>
+                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc85_azim270.png" data-title="Incidence 85°, azimuth 270°" data-desc="Sun 5° above the horizon from azimuth 270°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 270°</button>
+                  <button class="btn btn-sm btn-tile" data-tile="shackleton_inc70_azim120.png" data-title="Incidence 70°, azimuth 120°" data-desc="Sun 20° above the horizon. Illustrative only: this does not occur near the lunar south pole.">Inc 70° / Azim 120°</button>
                 </div>
               </div>
               <div class="callout-box mt-2">
-                <h4 id="tile-info-title">Polar Grazing North (Inc 85°, Azim 0°)</h4>
-                <p class="text-muted text-sm mt-1" id="tile-info-desc">Extreme grazing sunlight casts shadow across 80% of the crater bowl. Standard vision models detect false steep drops at shadow terminators; NASA-IBM LFM conditions on solar tokens to recover true topography.</p>
-                <div class="metric-row mt-2">
-                  <div class="metric-box">
-                    <span class="metric-val" id="tile-metric-gain">+38.7%</span>
-                    <span class="metric-lbl">Disambiguation Gain</span>
-                  </div>
-                  <div class="metric-box">
-                    <span class="metric-val" id="tile-metric-divergence">4.1%</span>
-                    <span class="metric-lbl">LFM Divergence</span>
-                  </div>
-                  <div class="metric-box">
-                    <span class="metric-val" id="tile-metric-baseline">42.8%</span>
-                    <span class="metric-lbl">Baseline Divergence</span>
-                  </div>
-                </div>
+                <h4 id="tile-info-title">Incidence 85°, azimuth 0°</h4>
+                <p class="text-muted text-sm mt-1" id="tile-info-desc">Sun 5° above the horizon from azimuth 0°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.</p>
               </div>
             </div>
             <div class="text-center">
-              <img id="tile-preview-img" src="assets/blender_renders/shackleton_inc85_azim000.png" alt="Simulated LROC observation tile rendered with Blender 5.2" style="width: 256px; height: 256px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.5);" />
-              <p class="caption text-center mt-1">256 × 256 px simulated LROC NAC tile (native input dimension for NASA-IBM LFM)</p>
+              <img id="tile-preview-img" src="assets/blender_renders/shackleton_inc85_azim000.png" alt="Rendered tile of the schematic crater mesh" style="width: 256px; height: 256px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.5);" />
+              <p class="caption text-center mt-1">256 × 256 px rendered tile (the model's input size). Not LROC data, and not passed through the model.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 6: 3D SOLAR LAB & MULTI-ANGLE MODELS -->
+    <!-- TAB 6: 3D LIGHTING LAB (SCHEMATIC MODELS) -->
     <section id="tab-3d-lab" class="tab-pane">
       <div class="card">
         <div class="toolbar">
           <div>
-            <h2>3D Multi-Angle Solar Lab (Blender 5.2 Physical Lighting)</h2>
-            <p class="text-muted">Interactive 3D physical models with ray-marched solar shadows and regolith reflectance baked for each illumination angle. Orbit in full 3D to observe polar illumination dynamics and Artemis IV terrain clearance.</p>
+            <h2>3D Multi-Angle Lighting Lab (schematic Blender models)</h2>
+            <p class="text-muted">Schematic crater models with ray-marched shadows baked for each lighting angle. Orbit to see how shadows move with the Sun's direction. Illustrative only: the terrain is analytic, not real, and nothing here is run through the model.</p>
           </div>
         </div>
 
         <div class="control-group mt-2">
           <label>Select Illumination Angle (3D Model):</label>
           <div class="btn-group" id="lab-3d-angle-buttons">
-            <button class="btn btn-sm btn-lab-angle active" data-model="shackleton_3d_inc85_azim000.glb" data-tile="shackleton_inc85_azim000.png" data-inc="85.0" data-azim="0.0" data-elev="5.0" data-regime="Polar Grazing North (Inc 85°, Azim 0°)" data-lit="41.5%" data-shadow="48.4%" data-psr="Confirmed Permanent Shadow" data-gain="+38.7%" data-div="4.1%" data-base="42.8%" data-vector="[85.0, 0.0, 85.0, 0.0, -89.9, 0.0, 0.0, 117.18]" data-desc="Solar rays strike from the north at 5° above the horizon. Deep cast shadow submerges 48.4% of the crater floor in 40 K permanent cold trap while the northern rim crest remains continuously lit.">Inc 85° / Azim 0° (North)</button>
-            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc85_azim090.glb" data-tile="shackleton_inc85_azim090.png" data-inc="85.0" data-azim="90.0" data-elev="5.0" data-regime="Polar Grazing East (Inc 85°, Azim 90°)" data-lit="42.8%" data-shadow="47.1%" data-psr="Confirmed Permanent Shadow" data-gain="+36.2%" data-div="4.8%" data-base="41.0%" data-vector="[85.0, 0.0, 85.0, 90.0, -89.9, 0.0, 90.0, 117.18]" data-desc="Eastern illumination casts shadow across the western wall. Notice how the elevated Connecting Ridge (+1.15 km) stands out in full sunlight while the crater interior is fully occluded.">Inc 85° / Azim 90° (East)</button>
-            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc85_azim180.glb" data-tile="shackleton_inc85_azim180.png" data-inc="85.0" data-azim="180.0" data-elev="5.0" data-regime="Polar Grazing South (Inc 85°, Azim 180°)" data-lit="40.9%" data-shadow="49.0%" data-psr="Confirmed Permanent Shadow" data-gain="+41.1%" data-div="3.9%" data-base="45.0%" data-vector="[85.0, 0.0, 85.0, 180.0, -89.9, 0.0, 180.0, 117.18]" data-desc="180° shadow flip from the south. Standard vision models diverge by 42.8% due to inverted shadow edges; NASA-IBM LFM conditions on solar tokens to achieve 4.1% consistency (+41.1% gain).">Inc 85° / Azim 180° (South)</button>
-            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc85_azim270.glb" data-tile="shackleton_inc85_azim270.png" data-inc="85.0" data-azim="270.0" data-elev="5.0" data-regime="Polar Grazing West (Inc 85°, Azim 270°)" data-lit="42.3%" data-shadow="47.6%" data-psr="Confirmed Permanent Shadow" data-gain="+37.5%" data-div="4.4%" data-base="41.9%" data-vector="[85.0, 0.0, 85.0, 270.0, -89.9, 0.0, 270.0, 117.18]" data-desc="Western illumination casts opposite shadows across the eastern slopes. Self-attention layers decouple optical shadow boundaries from true physical crater wall gradients.">Inc 85° / Azim 270° (West)</button>
-            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc70_azim120.glb" data-tile="shackleton_inc70_azim120.png" data-inc="70.0" data-azim="120.0" data-elev="20.0" data-regime="Sub-Polar Summer (Inc 70°, Azim 120°)" data-lit="58.2%" data-shadow="31.7%" data-psr="Confirmed Permanent Shadow" data-gain="+29.4%" data-div="3.2%" data-base="32.6%" data-vector="[70.0, 0.0, 70.0, 120.0, -89.9, 0.0, 120.0, 117.18]" data-desc="Higher solar elevation (20° above horizon) partially illuminates upper terraces and outer ejecta blanket, demonstrating multi-incidence seasonal invariance.">Inc 70° / Azim 120° (Summer)</button>
-            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_neutral.glb" data-tile="shackleton_inc85_azim000.png" data-inc="None" data-azim="None" data-elev="None" data-regime="Neutral Baseline Topography" data-lit="100.0%" data-shadow="0.0%" data-psr="Baseline Geometry" data-gain="Reference" data-div="0.0%" data-base="0.0%" data-vector="[None - Pure Geometric Relief]" data-desc="Unshadowed terrain topography shaded purely by slope gradient, providing an unoccluded 3D ground-truth geometric reference for the crater and connecting ridge.">Neutral Baseline Topography</button>
+            <button class="btn btn-sm btn-lab-angle active" data-model="shackleton_3d_inc85_azim000.glb" data-tile="shackleton_inc85_azim000.png" data-inc="85.0" data-azim="0.0" data-elev="5.0" data-regime="Incidence 85°, azimuth 0°" data-desc="Sun 5° above the horizon from azimuth 0°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 0°</button>
+            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc85_azim090.glb" data-tile="shackleton_inc85_azim090.png" data-inc="85.0" data-azim="90.0" data-elev="5.0" data-regime="Incidence 85°, azimuth 90°" data-desc="Sun 5° above the horizon from azimuth 90°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 90°</button>
+            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc85_azim180.glb" data-tile="shackleton_inc85_azim180.png" data-inc="85.0" data-azim="180.0" data-elev="5.0" data-regime="Incidence 85°, azimuth 180°" data-desc="Sun 5° above the horizon from azimuth 180°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 180°</button>
+            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc85_azim270.glb" data-tile="shackleton_inc85_azim270.png" data-inc="85.0" data-azim="270.0" data-elev="5.0" data-regime="Incidence 85°, azimuth 270°" data-desc="Sun 5° above the horizon from azimuth 270°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.">Inc 85° / Azim 270°</button>
+            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_inc70_azim120.glb" data-tile="shackleton_inc70_azim120.png" data-inc="70.0" data-azim="120.0" data-elev="20.0" data-regime="Incidence 70°, azimuth 120°" data-desc="Sun 20° above the horizon. Illustrative only: this does not occur near the lunar south pole.">Inc 70° / Azim 120°</button>
+            <button class="btn btn-sm btn-lab-angle" data-model="shackleton_3d_neutral.glb" data-tile="shackleton_inc85_azim000.png" data-inc="None" data-azim="None" data-elev="None" data-regime="Unshadowed geometry" data-desc="The schematic terrain shaded by slope only, with no cast shadows.">Unshadowed geometry</button>
           </div>
         </div>
 
@@ -451,7 +350,7 @@
               <model-viewer
                 id="lab-3d-model-viewer"
                 src="assets/3d/shackleton_3d_inc85_azim000.glb"
-                alt="Interactive 3D Physical Model of Shackleton Crater"
+                alt="Schematic 3D crater model with baked shadows"
                 auto-rotate
                 camera-controls
                 rotation-per-second="10deg"
@@ -462,7 +361,7 @@
                 style="width: 100%; height: 100%; background-color: #07090e;">
               </model-viewer>
               <div class="model-overlay-badge" style="position: absolute; bottom: 12px; left: 12px; background: rgba(13, 17, 23, 0.88); padding: 6px 12px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.78rem;">
-                <span id="lab-model-status-badge">🌕 3D Model: Inc 85° / Azim 0° (North) · 766 KB glTF · Drag to Orbit / Scroll to Zoom</span>
+                <span id="lab-model-status-badge">🌕 3D Model: Incidence 85°, azimuth 0° · 766 KB glTF · Drag to Orbit / Scroll to Zoom</span>
               </div>
             </div>
 
@@ -470,22 +369,21 @@
             <div class="cam-presets-bar">
               <span class="text-muted text-sm" style="font-weight: 600;">Camera Presets:</span>
               <button class="btn btn-sm btn-cam-preset active" data-orbit="45deg 60deg 45m" data-target="0m 0m 0m">🛰️ Overview Orbit</button>
-              <button class="btn btn-sm btn-cam-preset" data-orbit="135deg 75deg 20m" data-target="-7m 7m 1m">🏔️ Connecting Ridge (CR-1)</button>
-              <button class="btn btn-sm btn-cam-preset" data-orbit="110deg 70deg 25m" data-target="-4m 10m 0m">⛰️ Peak Near Shackleton (PNS-1)</button>
-              <button class="btn btn-sm btn-cam-preset" data-orbit="0deg 85deg 18m" data-target="0m 0m -3m">🌑 Crater Abyss / PSR</button>
+              <button class="btn btn-sm btn-cam-preset" data-orbit="135deg 75deg 20m" data-target="-7m 7m 1m">🏔️ Ridge (schematic)</button>
+              <button class="btn btn-sm btn-cam-preset" data-orbit="110deg 70deg 25m" data-target="-4m 10m 0m">⛰️ Rim high point (schematic)</button>
+              <button class="btn btn-sm btn-cam-preset" data-orbit="0deg 85deg 18m" data-target="0m 0m -3m">🌑 Crater floor</button>
               <button class="btn btn-sm btn-cam-preset" data-orbit="0deg 0deg 40m" data-target="0m 0m 0m">⬇️ Top-Down Nadir</button>
               <button class="btn btn-sm btn-cam-preset active" id="lab-btn-autorotate" title="Toggle 3D auto-rotation">🔄 Auto-Rotate: ON</button>
             </div>
-            <p class="caption text-center mt-2">Physically grounded 3D model generated headless via Blender 5.2 LTS with ray-marched solar shadows and regolith vertex illumination</p>
+            <p class="caption text-center mt-2">Schematic models generated headless in Blender 5.2 with ray-marched shadows on analytic terrain. Source: scripts/blender/generate_multi_illum_3d_models.py</p>
           </div>
 
-          <!-- PHYSICAL TELEMETRY & LFM CONDITIONING -->
+          <!-- LIGHTING PARAMETERS -->
           <div>
             <div class="card" style="margin-top: 0;">
-              <h3 id="lab-regime-title" style="color: var(--accent-cyan);">Polar Grazing North (Inc 85°, Azim 0°)</h3>
-              <p class="text-muted text-sm mt-1" id="lab-regime-desc">Solar rays strike from the north at 5° above the horizon. Deep cast shadow submerges 48.4% of the crater floor in 40 K permanent cold trap while the northern rim crest remains continuously lit.</p>
+              <h3 id="lab-regime-title" style="color: var(--accent-cyan);">Incidence 85°, azimuth 0°</h3>
+              <p class="text-muted text-sm mt-1" id="lab-regime-desc">Sun 5° above the horizon from azimuth 0°. Illustrative: at Shackleton the Sun never rises more than about 1.9°.</p>
 
-              <!-- TELEMETRY STATS -->
               <div class="telemetry-grid">
                 <div class="telemetry-stat">
                   <span class="telemetry-val" id="lab-tel-inc">85.0°</span>
@@ -499,40 +397,19 @@
                   <span class="telemetry-val" id="lab-tel-elev">5.0°</span>
                   <span class="telemetry-lbl">Solar Elevation</span>
                 </div>
-                <div class="telemetry-stat">
-                  <span class="telemetry-val" id="lab-tel-lit">41.5%</span>
-                  <span class="telemetry-lbl">Lit Surface Area</span>
-                </div>
-                <div class="telemetry-stat">
-                  <span class="telemetry-val" id="lab-tel-shadow">48.4%</span>
-                  <span class="telemetry-lbl">Cast Shadow Area</span>
-                </div>
-                <div class="telemetry-stat">
-                  <span class="telemetry-val" id="lab-tel-gain" style="color: var(--accent-gold);">+38.7%</span>
-                  <span class="telemetry-lbl">LFM Stability Gain</span>
-                </div>
               </div>
 
-              <!-- LFM CONDITIONING VECTOR -->
               <div class="callout-box mt-2">
-                <h4>NASA-IBM LFM 8D Optical Conditioning Vector</h4>
-                <p class="text-muted text-sm mt-1">Multi-angle optical conditioning injected into ViT-B self-attention sequence:</p>
-                <div class="code-block mt-2" style="padding: 10px; font-size: 0.82rem; font-family: var(--font-mono); background: #07090e; border: 1px solid var(--border-color); border-radius: 4px; overflow-x: auto;">
-                  <span id="lab-optical-vector">[85.0, 0.0, 85.0, 0.0, -89.9, 0.0, 0.0, 117.18]</span>
-                </div>
-                <div class="text-xs text-muted mt-1">
-                  <code>[incidence, emission, phase, azimuth, center_lat, center_lon, subsolar_lat, subsolar_lon]</code>
-                </div>
+                <h4>How the real model sees lighting</h4>
+                <p class="text-muted text-sm mt-1">In the NASA-IBM LFM, each tile's illumination angles (incidence, emission, phase, azimuth) and sub-solar and tile-centre coordinates are binned and given to the encoder as text tokens alongside the image (model card). These renders were not run through the model.</p>
               </div>
 
-              <!-- SYNCHRONIZED 2D LROC NAC TILE -->
               <div class="mt-3 text-center" style="background: #0d1117; padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;">
-                  <img id="lab-tile-preview-img" src="assets/blender_renders/shackleton_inc85_azim000.png" alt="Simulated LROC tile" style="width: 130px; height: 130px; border-radius: 6px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.5);" />
+                  <img id="lab-tile-preview-img" src="assets/blender_renders/shackleton_inc85_azim000.png" alt="Rendered tile of the schematic crater" style="width: 130px; height: 130px; border-radius: 6px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.5);" />
                   <div style="text-align: left;">
-                    <h5 id="lab-tile-title">Simulated LROC NAC Tile (256×256)</h5>
-                    <p class="text-muted text-xs mt-1" id="lab-tile-status">Input tile passed to LFM ViT-B patch tokenizer ($p=16$, 256 visual tokens).</p>
-                    <span class="badge badge-accent mt-2" id="lab-divergence-badge">LFM Divergence: 4.1% (Baseline: 42.8%)</span>
+                    <h5 id="lab-tile-title">Rendered tile (256×256)</h5>
+                    <p class="text-muted text-xs mt-1" id="lab-tile-status">The model's input size, but not LROC data and not passed through the model.</p>
                   </div>
                 </div>
               </div>
@@ -545,7 +422,7 @@
     <!-- TAB 5: BENCHMARKS & DISCLOSURES -->
     <section id="tab-benchmarks" class="tab-pane">
       <div class="card">
-        <h2>SomBench Benchmark Performance (Ground Truth)</h2>
+        <h2>SomBench Benchmark Results (from the model card)</h2>
         <div id="benchmarks-list" class="benchmark-grid"></div>
       </div>
 
@@ -570,7 +447,7 @@
   </main>
 
   <footer class="app-footer">
-    <p>NASA-IBM Lunar Foundation Model Explorer · Grounded in Technical Report (Fraccaro et al., 2026) · Developed under FAIR &amp; ABAI Standards</p>
+    <p>NASA-IBM Lunar Foundation Model Explorer · Model facts from the Hugging Face model card (Fraccaro et al., 2026) · Developed under FAIR &amp; ABAI Standards</p>
   </footer>
 
   <!-- Visitor Analytics Beacon (ABAI kb/kits.md) -->

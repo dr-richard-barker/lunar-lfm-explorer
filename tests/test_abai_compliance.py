@@ -17,17 +17,21 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 def test_abai_l006_no_synthetic_results_fallback():
     """
     ABAI L006: Strictly prohibit silent synthetic fallback (e.g. np.random masquerading as real results).
-    Inspect all Python files in src/ for random number generation.
+    Inspect all Python files in src/ and scripts/ for random number generation. (Hard-coded
+    values are not detectable this way; the render-inventory test guards that case.)
     """
-    src_dir = ROOT_DIR / "src"
     prohibited_patterns = [
         re.compile(r"np\.random"),
         re.compile(r"numpy\.random"),
         re.compile(r"random\.random\(\)"),
+        re.compile(r"random\.uniform"),
         re.compile(r"simulate_lunar_data"),
     ]
 
-    for py_file in src_dir.rglob("*.py"):
+    py_files = [p for d in (ROOT_DIR / "src", ROOT_DIR / "scripts") for p in d.rglob("*.py")]
+    for py_file in py_files:
+        if py_file.name == "verify_fair_compliance.py":
+            continue  # holds the patterns as strings
         content = py_file.read_text(encoding="utf-8")
         for pat in prohibited_patterns:
             matches = pat.findall(content)

@@ -23,11 +23,15 @@ def test_offline_mode_behavior(tmp_path, monkeypatch):
     """Verify that when network is unreachable, it reports structured offline status without crashing."""
     client = LunarHubClient(cache_dir=tmp_path)
 
-    # Monkeypatch requests.get to simulate connection error
-    def mock_get(*args, **kwargs):
-        raise ConnectionError("Simulated network outage")
+    # The client uses urllib.request.urlopen; make it fail as an outage would.
+    # (An earlier version patched requests.get, which the client never calls, so the
+    # test reached the live API and failed whenever the network was up.)
+    import urllib.error
 
-    monkeypatch.setattr("requests.get", mock_get)
+    def mock_urlopen(*args, **kwargs):
+        raise urllib.error.URLError("Simulated network outage")
+
+    monkeypatch.setattr("urllib.request.urlopen", mock_urlopen)
 
     meta = client.get_remote_metadata()
     assert meta["_source"] == "offline_no_cache"
