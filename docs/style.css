@@ -743,3 +743,10 @@ body {
   margin-top: 4px;
 }
 
+/* Inline source links: the browser default (#0000EE) is unreadable on the dark cards (ABAI L023) */
+.card p a,
+.callout-box a,
+.spec-table a {
+  color: var(--accent-cyan, #38bdf8);
+  text-decoration: underline;
+}

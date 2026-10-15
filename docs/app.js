@@ -381,7 +381,7 @@ async function initHubProbe() {
           <span class="metric-lbl">Registered Files</span>
         </div>
         <div class="metric-box">
-          <span class="metric-val">${(data.usedStorage ? (data.usedStorage / (1024**3)).toFixed(1) + ' GB' : '~12.8 GB')}</span>
+          <span class="metric-val">${(data.usedStorage ? (data.usedStorage / 1e9).toFixed(1) + ' GB' : '~12.8 GB')}</span>
           <span class="metric-lbl">Total Checkpoints Size</span>
         </div>
       </div>
